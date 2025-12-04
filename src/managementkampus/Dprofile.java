@@ -48,28 +48,23 @@ public class Dprofile extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
         jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
         jTextField8 = new javax.swing.JTextField();
         jTextField9 = new javax.swing.JTextField();
         jInternalFrame3 = new javax.swing.JInternalFrame();
         jInternalFrame4 = new javax.swing.JInternalFrame();
         jLabel5 = new javax.swing.JLabel();
         jTextField10 = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jTextField11 = new javax.swing.JTextField();
         jTextField12 = new javax.swing.JTextField();
         jTextField13 = new javax.swing.JTextField();
-        jTextField14 = new javax.swing.JTextField();
         jInternalFrame19 = new javax.swing.JInternalFrame();
         jInternalFrame20 = new javax.swing.JInternalFrame();
         jInternalFrame21 = new javax.swing.JInternalFrame();
@@ -89,8 +84,6 @@ public class Dprofile extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        jTextField15 = new javax.swing.JTextField();
-        jTextField16 = new javax.swing.JTextField();
         jTextField17 = new javax.swing.JTextField();
         jTextField18 = new javax.swing.JTextField();
 
@@ -481,13 +474,13 @@ public class Dprofile extends javax.swing.JFrame {
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
 
-        getContentPane().add(jInternalFrame1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 710, 120, 20));
+        getContentPane().add(jInternalFrame1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 610, 120, 20));
 
         jLabel3.setText("Nomor Induk Pegawai :  ");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, -1, -1));
 
         jLabel4.setText("Tahun lulus");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 640, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 540, -1, -1));
 
         jTextField3.setEditable(false);
         jTextField3.setPreferredSize(new java.awt.Dimension(200, 200));
@@ -500,12 +493,6 @@ public class Dprofile extends javax.swing.JFrame {
 
         jLabel13.setText("Jenis Kelamin");
         getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 350, -1, -1));
-
-        jLabel14.setText("Pangkat & Golongan");
-        getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 440, -1, -1));
-
-        jLabel15.setText("Jabatan Fungsional");
-        getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 410, -1, -1));
 
         jLabel16.setText("Program Studi / Homebase");
         getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 380, -1, -1));
@@ -540,15 +527,6 @@ public class Dprofile extends javax.swing.JFrame {
         });
         getContentPane().add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 380, 160, 20));
 
-        jTextField7.setEditable(false);
-        jTextField7.setPreferredSize(new java.awt.Dimension(200, 200));
-        jTextField7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField7ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 440, 160, 20));
-
         jTextField8.setEditable(false);
         jTextField8.setPreferredSize(new java.awt.Dimension(200, 200));
         jTextField8.addActionListener(new java.awt.event.ActionListener() {
@@ -556,7 +534,7 @@ public class Dprofile extends javax.swing.JFrame {
                 jTextField8ActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 610, 160, 20));
+        getContentPane().add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 570, 160, 20));
 
         jTextField9.setEditable(false);
         jTextField9.setPreferredSize(new java.awt.Dimension(200, 200));
@@ -608,7 +586,7 @@ public class Dprofile extends javax.swing.JFrame {
         getContentPane().add(jInternalFrame3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 120, 20));
 
         jLabel5.setText("Bidang Keahlian");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 470, -1, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 410, -1, -1));
 
         jTextField10.setEditable(false);
         jTextField10.setPreferredSize(new java.awt.Dimension(200, 200));
@@ -617,19 +595,16 @@ public class Dprofile extends javax.swing.JFrame {
                 jTextField10ActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField10, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 470, 160, 20));
-
-        jLabel6.setText("Jabatan Struktural");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 500, -1, -1));
+        getContentPane().add(jTextField10, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 480, 160, 20));
 
         jLabel7.setText("Pendidikan Terakhir");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 580, -1, -1));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 480, -1, -1));
 
         jLabel8.setText("Nomor Telepon ");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 780, -1, -1));
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 680, -1, -1));
 
         jLabel9.setText("Riwayat Pendidikan");
-        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 610, -1, -1));
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 510, -1, -1));
 
         jTextField11.setEditable(false);
         jTextField11.setPreferredSize(new java.awt.Dimension(200, 200));
@@ -638,7 +613,7 @@ public class Dprofile extends javax.swing.JFrame {
                 jTextField11ActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField11, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 500, 160, 20));
+        getContentPane().add(jTextField11, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 510, 160, 20));
 
         jTextField12.setEditable(false);
         jTextField12.setPreferredSize(new java.awt.Dimension(200, 200));
@@ -647,7 +622,7 @@ public class Dprofile extends javax.swing.JFrame {
                 jTextField12ActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField12, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 580, 160, 20));
+        getContentPane().add(jTextField12, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 540, 160, 20));
 
         jTextField13.setEditable(false);
         jTextField13.setPreferredSize(new java.awt.Dimension(200, 200));
@@ -656,16 +631,7 @@ public class Dprofile extends javax.swing.JFrame {
                 jTextField13ActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField13, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 640, 160, 20));
-
-        jTextField14.setEditable(false);
-        jTextField14.setPreferredSize(new java.awt.Dimension(200, 200));
-        jTextField14.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField14ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jTextField14, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 750, 160, 20));
+        getContentPane().add(jTextField13, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 650, 160, 20));
 
         jInternalFrame19.setBorder(javax.swing.BorderFactory.createTitledBorder("Akademik"));
         jInternalFrame19.setVisible(true);
@@ -1041,34 +1007,16 @@ public class Dprofile extends javax.swing.JFrame {
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
 
-        getContentPane().add(jInternalFrame19, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 550, 120, 20));
+        getContentPane().add(jInternalFrame19, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 450, 120, 20));
 
         jLabel10.setText("Bidang studi spesifik");
-        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 670, -1, -1));
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 570, -1, -1));
 
         jLabel12.setText("Alamat Kantor");
-        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 810, -1, -1));
+        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 710, -1, -1));
 
         jLabel17.setText("Email Akademik");
-        getContentPane().add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 750, -1, -1));
-
-        jTextField15.setEditable(false);
-        jTextField15.setPreferredSize(new java.awt.Dimension(200, 200));
-        jTextField15.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField15ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jTextField15, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 780, 160, 20));
-
-        jTextField16.setEditable(false);
-        jTextField16.setPreferredSize(new java.awt.Dimension(200, 200));
-        jTextField16.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField16ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jTextField16, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 810, 160, 20));
+        getContentPane().add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 650, -1, -1));
 
         jTextField17.setEditable(false);
         jTextField17.setPreferredSize(new java.awt.Dimension(200, 200));
@@ -1077,7 +1025,7 @@ public class Dprofile extends javax.swing.JFrame {
                 jTextField17ActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField17, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 670, 160, 20));
+        getContentPane().add(jTextField17, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 710, 160, 20));
 
         jTextField18.setEditable(false);
         jTextField18.setPreferredSize(new java.awt.Dimension(200, 200));
@@ -1086,7 +1034,7 @@ public class Dprofile extends javax.swing.JFrame {
                 jTextField18ActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField18, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 670, 160, 20));
+        getContentPane().add(jTextField18, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 680, 160, 20));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1106,10 +1054,6 @@ public class Dprofile extends javax.swing.JFrame {
     private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField6ActionPerformed
-
-    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField7ActionPerformed
 
     private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
         // TODO add your handling code here:
@@ -1134,18 +1078,6 @@ public class Dprofile extends javax.swing.JFrame {
     private void jTextField13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField13ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField13ActionPerformed
-
-    private void jTextField14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField14ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField14ActionPerformed
-
-    private void jTextField15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField15ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField15ActionPerformed
-
-    private void jTextField16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField16ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField16ActionPerformed
 
     private void jTextField17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField17ActionPerformed
         // TODO add your handling code here:
@@ -1230,15 +1162,12 @@ public class Dprofile extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -1246,16 +1175,12 @@ public class Dprofile extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField11;
     private javax.swing.JTextField jTextField12;
     private javax.swing.JTextField jTextField13;
-    private javax.swing.JTextField jTextField14;
-    private javax.swing.JTextField jTextField15;
-    private javax.swing.JTextField jTextField16;
     private javax.swing.JTextField jTextField17;
     private javax.swing.JTextField jTextField18;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
     // End of variables declaration//GEN-END:variables
