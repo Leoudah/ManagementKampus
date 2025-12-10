@@ -2,16 +2,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
-package managementkampus;
+package UI;
 
 
+import Database.koneksiDB;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.table.DefaultTableModel;
         
-public class AlinkUserDosen extends javax.swing.JInternalFrame {
+public class AlinkUser extends javax.swing.JInternalFrame {
     String textKode, textNama, buffNama;
     koneksiDB db = new koneksiDB();
     Connection con;
@@ -19,7 +20,7 @@ public class AlinkUserDosen extends javax.swing.JInternalFrame {
     /**
      * Creates new form FormSiswa
      */
- public AlinkUserDosen() {
+ public AlinkUser() {
     initComponents();
     connect(); // Memanggil connect() dan menyimpan hasilnya di con
     refreshTable();
@@ -97,7 +98,7 @@ public class AlinkUserDosen extends javax.swing.JInternalFrame {
         setResizable(true);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel1.setText("Link Dosen");
+        jLabel1.setText("Link Mahasiswa");
 
         jButton1.setText("Tambah");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
