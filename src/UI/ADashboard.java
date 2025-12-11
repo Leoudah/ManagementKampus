@@ -8,12 +8,12 @@ package UI;
  *
  * @author 62895
  */
-public class AdDashboard extends javax.swing.JPanel {
+public class ADashboard extends javax.swing.JPanel {
 
     /**
      * Creates new form AdDashboard
      */
-    public AdDashboard() {
+    public ADashboard() {
         initComponents();
     }
 
