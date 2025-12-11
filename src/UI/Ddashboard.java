@@ -333,7 +333,7 @@ public class Ddashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_formComponentMoved
 
     private void jMenu6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu6MouseClicked
-        loginAll loginAll = new loginAll();
+        ZLoginAll loginAll = new ZLoginAll();
         loginAll.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jMenu6MouseClicked

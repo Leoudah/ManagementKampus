@@ -337,7 +337,7 @@ public class Mdashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField33ActionPerformed
 
     private void jMenu6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu6MouseClicked
-        loginAll loginAll = new loginAll();
+        ZLoginAll loginAll = new ZLoginAll();
         loginAll.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jMenu6MouseClicked

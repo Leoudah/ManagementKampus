@@ -7,7 +7,7 @@ import java.awt.TextField;
 
 import javax.swing.*;
 
-public class loginAll extends javax.swing.JFrame {
+public class ZLoginAll extends javax.swing.JFrame {
 
     /**
      * Creates new form Login
@@ -15,7 +15,7 @@ public class loginAll extends javax.swing.JFrame {
     private void myInitComponents(){
     }
     
-    public loginAll() {
+    public ZLoginAll() {
         initComponents();
         myInitComponents();
     }
@@ -103,7 +103,7 @@ public class loginAll extends javax.swing.JFrame {
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
         String username = usernameField.getText();
-        String password = new String(passwordField.getText());
+        String password = new String(passwordField.getPassword());
 
 
         UserDAO dao = new UserDAO();
@@ -156,14 +156,18 @@ public class loginAll extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(loginAll.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ZLoginAll.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(loginAll.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ZLoginAll.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(loginAll.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ZLoginAll.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(loginAll.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ZLoginAll.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -171,7 +175,7 @@ public class loginAll extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new loginAll().setVisible(true);
+                new ZLoginAll().setVisible(true);
             }
         });
 

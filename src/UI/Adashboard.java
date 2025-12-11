@@ -3,18 +3,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package UI;
-
+import java.awt.CardLayout;
 /**
  *
  * @author 62895
  */
 public class Adashboard extends javax.swing.JFrame {
-
-    /**
-     * Creates new form Adashboard
-     */
+    private CardLayout cardLayout;
+    
     public Adashboard() {
         initComponents();
+        
+        // Set CardLayout sebagai layout utama
+        cardLayout = new CardLayout();
+        jPanel1.setLayout(cardLayout);
+
+        // Load semua halaman (FormX harus extends JPanel)
+        jPanel1.add(new ManageAccountA(), "manageAkun");
     }
 
     /**
@@ -56,7 +61,7 @@ public class Adashboard extends javax.swing.JFrame {
         jMenu7 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
-        jMenuItem7 = new javax.swing.JMenuItem();
+        manageAkun = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem10 = new javax.swing.JMenuItem();
@@ -244,13 +249,18 @@ public class Adashboard extends javax.swing.JFrame {
         });
         jMenu7.add(jMenuItem6);
 
-        jMenuItem7.setText("Akun");
-        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem7ActionPerformed(evt);
+        manageAkun.setText("Akun");
+        manageAkun.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                manageAkunMouseClicked(evt);
             }
         });
-        jMenu7.add(jMenuItem7);
+        manageAkun.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                manageAkunActionPerformed(evt);
+            }
+        });
+        jMenu7.add(manageAkun);
 
         jMenu3.setText("Link User");
 
@@ -310,9 +320,9 @@ public class Adashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
-    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+    private void manageAkunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageAkunActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem7ActionPerformed
+    }//GEN-LAST:event_manageAkunActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         // TODO add your handling code here:
@@ -335,10 +345,14 @@ public class Adashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
-        loginAll loginAll = new loginAll();
+        ZLoginAll loginAll = new ZLoginAll();
         loginAll.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jMenu4MouseClicked
+
+    private void manageAkunMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageAkunMouseClicked
+        cardLayout.show(jPanel1, "manageAkun");
+    }//GEN-LAST:event_manageAkunMouseClicked
 
     /**
      * @param args the command line arguments
@@ -398,7 +412,6 @@ public class Adashboard extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -411,5 +424,6 @@ public class Adashboard extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JMenuItem manageAkun;
     // End of variables declaration//GEN-END:variables
 }
