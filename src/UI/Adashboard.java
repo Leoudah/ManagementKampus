@@ -19,7 +19,7 @@ public class Adashboard extends javax.swing.JFrame {
         jPanel1.setLayout(cardLayout);
 
         // Load semua halaman (FormX harus extends JPanel)
-        jPanel1.add(new ManageAccountA(), "manageAkun");
+        jPanel1.add(new AManageAccount(), "manageAkun");
     }
 
     /**
