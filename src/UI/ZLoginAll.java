@@ -116,18 +116,18 @@ public class ZLoginAll extends javax.swing.JFrame {
             // Buka UI sesuai role
             switch (user.getRole()) {
                 case "ADMIN":
-                    Adashboard Adashboard = new Adashboard();
-                    Adashboard.setVisible(true);
+                    ADashboard ADashboard = new ADashboard();
+                    ADashboard.setVisible(true);
                     this.dispose();
                     break;
                 case "STUDENT":
-                    Mdashboard Mdashboard = new Mdashboard();
-                    Mdashboard.setVisible(true);
+                    MhsDashboard MhsDashboard = new MhsDashboard();
+                    MhsDashboard.setVisible(true);
                     this.dispose();
                     break;
                 case "LECTURER":
-                    Ddashboard Ddashboard = new Ddashboard();
-                    Ddashboard.setVisible(true);
+                    DoDashboard DoDashboard = new DoDashboard();
+                    DoDashboard.setVisible(true);
                     this.dispose();
                     break;
                 default:
