@@ -8,14 +8,13 @@ package UI;
  *
  * @author 62895
  */
-public class MMainFrame extends javax.swing.JFrame {
+public class Menrollment extends javax.swing.JFrame {
 
-    private String role;
-    
-    public MMainFrame() {
-        this.role = role;
+    /**
+     * Creates new form Menrollment
+     */
+    public Menrollment() {
         initComponents();
-
     }
 
     /**
@@ -27,25 +26,8 @@ public class MMainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        Jmenus = new javax.swing.JMenuBar();
-        jMenu5 = new javax.swing.JMenu();
-        jMenu1 = new javax.swing.JMenu();
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        Jmenus.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                JmenusMouseClicked(evt);
-            }
-        });
-
-        jMenu5.setText("Dashboard");
-        Jmenus.add(jMenu5);
-
-        jMenu1.setText("Profile");
-        Jmenus.add(jMenu1);
-
-        setJMenuBar(Jmenus);
+        setPreferredSize(new java.awt.Dimension(800, 600));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -55,15 +37,11 @@ public class MMainFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 577, Short.MAX_VALUE)
+            .addGap(0, 600, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void JmenusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JmenusMouseClicked
-        
-    }//GEN-LAST:event_JmenusMouseClicked
 
     /**
      * @param args the command line arguments
@@ -82,34 +60,24 @@ public class MMainFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MMainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menrollment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MMainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menrollment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MMainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menrollment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MMainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menrollment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MMainFrame().setVisible(true);
+                new Menrollment().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuBar Jmenus;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu5;
     // End of variables declaration//GEN-END:variables
 }

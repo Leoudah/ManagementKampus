@@ -8,12 +8,12 @@ package UI;
  *
  * @author 62895
  */
-public class AManageEnrollment extends javax.swing.JPanel {
+public class Menu extends javax.swing.JPanel {
 
     /**
-     * Creates new form AdManageEnrollment
+     * Creates new form Menu
      */
-    public AManageEnrollment() {
+    public Menu() {
         initComponents();
     }
 

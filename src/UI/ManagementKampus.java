@@ -8,6 +8,8 @@ public class ManagementKampus {
             public void run() {
                 ZLoginAll frame = new ZLoginAll(); // Gantilah YourJFrameClass dengan nama kelas Anda.
                 frame.setDefaultCloseOperation(ZLoginAll.EXIT_ON_CLOSE);
+                loginAll frame = new loginAll(); // Gantilah YourJFrameClass dengan nama kelas Anda.
+                frame.setDefaultCloseOperation(loginAll.EXIT_ON_CLOSE);
                 frame.setVisible(true);
             }
         });

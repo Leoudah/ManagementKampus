@@ -7,7 +7,7 @@ import java.awt.TextField;
 
 import javax.swing.*;
 
-public class ZLoginAll extends javax.swing.JFrame {
+public class loginAll extends javax.swing.JFrame {
 
     /**
      * Creates new form Login
@@ -15,7 +15,7 @@ public class ZLoginAll extends javax.swing.JFrame {
     private void myInitComponents(){
     }
     
-    public ZLoginAll() {
+    public loginAll() {
         initComponents();
         myInitComponents();
     }
@@ -103,7 +103,7 @@ public class ZLoginAll extends javax.swing.JFrame {
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
         String username = usernameField.getText();
-        String password = new String(passwordField.getPassword());
+        String password = new String(passwordField.getText());
 
 
         UserDAO dao = new UserDAO();
@@ -116,18 +116,18 @@ public class ZLoginAll extends javax.swing.JFrame {
             // Buka UI sesuai role
             switch (user.getRole()) {
                 case "ADMIN":
-                    ADashboard ADashboard = new ADashboard();
-                    ADashboard.setVisible(true);
+                    Adashboard Adashboard = new Adashboard();
+                    Adashboard.setVisible(true);
                     this.dispose();
                     break;
                 case "STUDENT":
-                    MhsDashboard MhsDashboard = new MhsDashboard();
-                    MhsDashboard.setVisible(true);
+                    Mdashboard Mdashboard = new Mdashboard();
+                    Mdashboard.setVisible(true);
                     this.dispose();
                     break;
                 case "LECTURER":
-                    DoDashboard DoDashboard = new DoDashboard();
-                    DoDashboard.setVisible(true);
+                    Ddashboard Ddashboard = new Ddashboard();
+                    Ddashboard.setVisible(true);
                     this.dispose();
                     break;
                 default:
@@ -156,18 +156,14 @@ public class ZLoginAll extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ZLoginAll.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(loginAll.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ZLoginAll.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(loginAll.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ZLoginAll.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(loginAll.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ZLoginAll.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(loginAll.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -175,7 +171,7 @@ public class ZLoginAll extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ZLoginAll().setVisible(true);
+                new loginAll().setVisible(true);
             }
         });
 
