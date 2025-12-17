@@ -2,9 +2,6 @@ package UI;
 
 import DAO.UserDAO;
 import Model.user;
-import javax.swing.JPasswordField;
-import java.awt.TextField;
-
 import javax.swing.*;
 
 public class ZLoginAll extends javax.swing.JFrame {
@@ -116,18 +113,18 @@ public class ZLoginAll extends javax.swing.JFrame {
             // Buka UI sesuai role
             switch (user.getRole()) {
                 case "ADMIN":
-                    ADashboard ADashboard = new ADashboard();
-                    ADashboard.setVisible(true);
+                    AMainFrame AMainFrame = new AMainFrame();
+                    AMainFrame.setVisible(true);
                     this.dispose();
                     break;
                 case "STUDENT":
-                    MhsDashboard MhsDashboard = new MhsDashboard();
-                    MhsDashboard.setVisible(true);
+                    MMainFrame MMainFrame = new MMainFrame();
+                    MMainFrame.setVisible(true);
                     this.dispose();
                     break;
                 case "LECTURER":
-                    DoDashboard DoDashboard = new DoDashboard();
-                    DoDashboard.setVisible(true);
+                    DMainFrame DMainFrame = new DMainFrame();
+                    DMainFrame.setVisible(true);
                     this.dispose();
                     break;
                 default:
