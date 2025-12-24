@@ -16,8 +16,10 @@ import UI.admin.adminPanel.AlinkUserDosen;
 
 import java.awt.CardLayout;
 import javax.swing.JOptionPane;
+import Session.UserSession;
 
 public class AFrame extends javax.swing.JFrame {
+
     private CardLayout cardLayout;
 
     private ADashboard dashboardPanel;
@@ -34,6 +36,16 @@ public class AFrame extends javax.swing.JFrame {
 
 
     public AFrame() {
+        if (!UserSession.isAdmin()) {
+            JOptionPane.showMessageDialog(this,
+                "Akses ditolak!",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+            dispose();
+            return;
+        }
+        
         initComponents();
         initCard();
     }

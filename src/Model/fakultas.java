@@ -20,6 +20,10 @@ public class fakultas {
         this.code = code;
         this.description = description;
     }
+    
+    public fakultas(String kode, String nama, String deskripsi) {
+        this(0, kode, nama, deskripsi);
+    }
 
     public int getFakultasId() { return fakultasID; }
     public void setFakultasId(int fakultasID) { this.fakultasID = fakultasID;}

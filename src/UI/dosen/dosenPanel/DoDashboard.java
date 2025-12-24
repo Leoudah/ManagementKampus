@@ -10,8 +10,8 @@ import UI.dosen.DoFrame;
 
 import DAO.LectureDAO;
 
-import Model.lecture;
-import Model.userSession;
+import Model.lecturer;
+import Session.UserSession;
 
 import javax.swing.JPasswordField;
 import java.awt.TextField;
@@ -40,9 +40,9 @@ public class DoDashboard extends javax.swing.JPanel {
 //    private String email;
     
     private void loadData() {
-        lecture lec = userSession.getLecture();
+//        lecturer lec = UserSession.getLecture();
         
-        nama.setText(lec.getFullName());
+//        nama.setText(lec.getFullName());
         nama.setEditable(false); // dashboard tidak bisa edit
     }
 

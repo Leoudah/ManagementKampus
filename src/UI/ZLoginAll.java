@@ -8,8 +8,8 @@ import DAO.UserDAO;
 import DAO.LectureDAO;
 
 import Model.user;
-import Model.lecture;
-import Model.userSession;
+import Model.lecturer;
+import Session.UserSession;
 
 import javax.swing.JPasswordField;
 import java.awt.TextField;
@@ -166,6 +166,13 @@ public class ZLoginAll extends javax.swing.JFrame {
 
         UserDAO dao = new UserDAO();
         user user = dao.login(username, password);
+        
+        if (user == null) {
+            JOptionPane.showMessageDialog(this, "Login gagal");
+            return;
+        }
+
+        UserSession.setUser(user);
 
         if (user != null) {
             JOptionPane.showMessageDialog(this, 
@@ -184,12 +191,12 @@ public class ZLoginAll extends javax.swing.JFrame {
                     this.dispose();
                     break;
                 case "LECTURER":
-                    userSession.setUser(user);
+                    UserSession.setUser(user);
 
                     LectureDAO lectureDAO = new LectureDAO();
-                    lecture lec = lectureDAO.readLecture(user.getUserId());
+                    lecturer lec = lectureDAO.readLecture(user.getUserId());
                     System.out.println("LECTURE FROM DAO = " + lec);
-                    userSession.setLecture(lec);
+//                    UserSession.setLecture(lec);
                     
                     DoFrame DoFrame = new DoFrame();
                     DoFrame.setVisible(true);

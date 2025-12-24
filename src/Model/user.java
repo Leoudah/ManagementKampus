@@ -4,10 +4,6 @@
  */
 package Model;
 
-/**
- *
- * @author 62895
- */
 public class user {
     private int userId;
     private String username;
@@ -28,4 +24,10 @@ public class user {
     public String getEmail() { return email; }
     public String getRole() { return role; }
     public String getStatus() { return status; }
+    
+    public boolean isActive() {
+    return "ACTIVE".equalsIgnoreCase(status);
+}
+
+    
 }
