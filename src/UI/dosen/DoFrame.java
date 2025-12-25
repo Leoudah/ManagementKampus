@@ -5,13 +5,15 @@
 package UI.dosen;
 
 import UI.ZLoginAll;
-import javax.swing.JOptionPane;
 import UI.dosen.dosenPanel.DoDashboard;
 import UI.dosen.dosenPanel.DoCourse;
 import UI.dosen.dosenPanel.DoInputNilai;
 import UI.dosen.dosenPanel.DoMystudent;
 import UI.dosen.dosenPanel.DoProfile;
+
 import java.awt.CardLayout;
+import javax.swing.JOptionPane;
+import Session.UserSession;
 
 public class DoFrame extends javax.swing.JFrame {
     private CardLayout cardLayout;
@@ -23,6 +25,16 @@ public class DoFrame extends javax.swing.JFrame {
     private DoProfile profilePanel;
    
     public DoFrame() {
+        if (!UserSession.isLecturer()) {
+            JOptionPane.showMessageDialog(this,
+                "Akses ditolak!",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+            dispose();
+            return;
+        }
+        
         initComponents();
         initCard();
     }

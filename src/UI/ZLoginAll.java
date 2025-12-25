@@ -173,6 +173,9 @@ public class ZLoginAll extends javax.swing.JFrame {
         }
 
         UserSession.setUser(user);
+        System.out.println(user);
+        System.out.println("ROLE = " + user.getRole());
+        System.out.println("USER_ID = " + user.getUserId());
 
         if (user != null) {
             JOptionPane.showMessageDialog(this, 
@@ -191,12 +194,15 @@ public class ZLoginAll extends javax.swing.JFrame {
                     this.dispose();
                     break;
                 case "LECTURER":
-                    UserSession.setUser(user);
-
                     LectureDAO lectureDAO = new LectureDAO();
                     lecturer lec = lectureDAO.readLecture(user.getUserId());
-                    System.out.println("LECTURE FROM DAO = " + lec);
-//                    UserSession.setLecture(lec);
+                    
+                    if (lec == null) {
+                        JOptionPane.showMessageDialog(this, "Data dosen tidak ditemukan");
+                        return;
+                    }
+                    
+                    UserSession.setLecturer(lec);
                     
                     DoFrame DoFrame = new DoFrame();
                     DoFrame.setVisible(true);

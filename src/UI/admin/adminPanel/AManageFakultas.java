@@ -73,6 +73,11 @@ public class AManageFakultas extends javax.swing.JPanel {
 
         Add.setBackground(new java.awt.Color(102, 255, 102));
         Add.setText("Tambah");
+        Add.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                AddMouseClicked(evt);
+            }
+        });
         Add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AddActionPerformed(evt);
@@ -266,6 +271,10 @@ public class AManageFakultas extends javax.swing.JPanel {
             clearForm();
         }
     }//GEN-LAST:event_DeleteActionPerformed
+
+    private void AddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_AddMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

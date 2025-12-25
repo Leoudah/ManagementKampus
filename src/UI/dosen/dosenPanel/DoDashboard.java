@@ -22,10 +22,10 @@ public class DoDashboard extends javax.swing.JPanel {
 
     public DoDashboard() {
         initComponents();
-//        loadData();
+        loadData();
     }
     
-//        private int lecturerId;
+//    private int lecturerId;
 //    private int userId;
 //    private String prodi; //Program Studi
 //    private int nidn;
@@ -40,9 +40,12 @@ public class DoDashboard extends javax.swing.JPanel {
 //    private String email;
     
     private void loadData() {
-//        lecturer lec = UserSession.getLecture();
+        lecturer lec = UserSession.getLecturer();
+        if (lec == null) {
+            throw new IllegalStateException("Lecturer session is null");
+        }
         
-//        nama.setText(lec.getFullName());
+        nama.setText(lec.getFullName());
         nama.setEditable(false); // dashboard tidak bisa edit
     }
 

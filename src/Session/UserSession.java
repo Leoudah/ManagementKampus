@@ -1,10 +1,13 @@
 package Session;
 
 import Model.user;
+import Model.lecturer;
 
 public class UserSession {
     private static user currentUser;
+    private static lecturer currentLecturer;
 
+    //USER LOGIN
     public static void setUser(user u) {
         currentUser = u;
         System.out.println("User login: " + u.getUsername());
@@ -13,7 +16,17 @@ public class UserSession {
     public static user getUser() {
         return currentUser;
     }
+    
+    //DATA DOSEN/LECTURER
+    public static void setLecturer(lecturer l) {
+        currentLecturer = l;
+    }
 
+    public static lecturer getLecturer() {
+        return currentLecturer;
+    }
+    
+    //PENGECEKAN LOGIN & ROLE
     public static boolean isLoggedIn() {
         return currentUser != null;
     }
@@ -31,5 +44,6 @@ public class UserSession {
 
     public static void clear() {
         currentUser = null;
+        currentLecturer = null;
     }
 }

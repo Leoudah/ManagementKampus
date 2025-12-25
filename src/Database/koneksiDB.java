@@ -7,10 +7,6 @@ package Database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-/**
- *
- * @author 62895
- */
 public class koneksiDB {
     public Connection connect() {
         Connection con = null;
