@@ -3,20 +3,39 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package UI.admin.adminPanel;
-
+import DAO.CourseDAO;
+import Model.Course;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author 62895
  */
 public class AManageCourse extends javax.swing.JPanel {
 
+    private CourseDAO courseDAO = new CourseDAO();
     /**
      * Creates new form ManageCourceA
      */
-    public AManageCourse() {
+     public AManageCourse() {
         initComponents();
+        loadTableCourse();
     }
+      // ================== METHOD LOAD DATA KE TABEL ==================
+    private void loadTableCourse() {
+    try {
+        String[] kolom = {"ID","Lecturer","Study Program","Code","Name","SKS","Semester"};
+        DefaultTableModel model = new DefaultTableModel(null, kolom);
 
+        for (Object[] row : courseDAO.getAllJoined()) {
+            model.addRow(row);
+        }
+        jTable4.setModel(model);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Gagal load data: " + e.getMessage());
+    }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -249,12 +268,55 @@ public class AManageCourse extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+         int row = jTable4.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih course yang akan dihapus");
+            return;
+        }
+        int id = Integer.parseInt(jTable4.getValueAt(row, 0).toString());
+
+        int konfirmasi = JOptionPane.showConfirmDialog(
+                this,
+                "Hapus course ID " + id + " ?",
+                "Konfirmasi Hapus",
+                JOptionPane.YES_NO_OPTION
+        );
+        if (konfirmasi != JOptionPane.YES_OPTION) return;
+
+        try {
+            courseDAO.delete(id);
+            loadTableCourse();
+            JOptionPane.showMessageDialog(this, "Course berhasil dihapus");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal hapus: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+       if (jTextField3.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Pilih course di tabel dulu");
+            return;
+        }
+        try {
+            int id = Integer.parseInt(jTextField3.getText());
+            int programId = Integer.parseInt(jComboBox2.getSelectedItem().toString());
+            String lecText = jTextField4.getText().trim();
+            Integer lecturerId = lecText.isEmpty() ? null : Integer.parseInt(lecText);
+
+            String code = jTextField1.getText().trim();
+            String name = jTextField2.getText().trim();
+            int sks = Integer.parseInt(jTextField5.getText());
+            int semester = Integer.parseInt(jTextField6.getText());
+
+            Course c = new Course(id, programId, lecturerId, code, name, sks, semester);
+            courseDAO.update(c);
+
+            loadTableCourse();
+            JOptionPane.showMessageDialog(this, "Course berhasil diupdate");
+        } catch (Exception e) {  JOptionPane.showMessageDialog(this, "Gagal update: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
@@ -274,7 +336,24 @@ public class AManageCourse extends javax.swing.JPanel {
     }//GEN-LAST:event_jTextField5ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+       try {
+            int programId = Integer.parseInt(jComboBox2.getSelectedItem().toString());
+            String lecText = jTextField4.getText().trim();
+            Integer lecturerId = lecText.isEmpty() ? null : Integer.parseInt(lecText);
+
+            String code = jTextField1.getText().trim();
+            String name = jTextField2.getText().trim();
+            int sks = Integer.parseInt(jTextField5.getText());
+            int semester = Integer.parseInt(jTextField6.getText());
+
+            Course c = new Course(programId, lecturerId, code, name, sks, semester);
+            courseDAO.insert(c);
+
+            loadTableCourse();
+            JOptionPane.showMessageDialog(this, "Course berhasil ditambahkan");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal tambah: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
@@ -282,7 +361,29 @@ public class AManageCourse extends javax.swing.JPanel {
     }//GEN-LAST:event_jTextField6ActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
-        // TODO add your handling code here:
+       int row = jTable4.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih course yang akan dihapus");
+            return;
+        }
+        int id = Integer.parseInt(jTable4.getValueAt(row, 0).toString());
+
+        int konfirmasi = JOptionPane.showConfirmDialog(
+                this,
+                "Hapus course ID " + id + " ?",
+                "Konfirmasi Hapus",
+                JOptionPane.YES_NO_OPTION
+        );
+        if (konfirmasi != JOptionPane.YES_OPTION) return;
+
+        try {
+            courseDAO.delete(id);
+            loadTableCourse();
+            JOptionPane.showMessageDialog(this, "Course berhasil dihapus");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal hapus: " + e.getMessage());
+        }
+    
     }//GEN-LAST:event_jTextField3ActionPerformed
 
 
