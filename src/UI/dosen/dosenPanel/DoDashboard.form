@@ -28,21 +28,19 @@
                   <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jLabel11" max="32767" attributes="0"/>
-                          <Component id="jLabel13" pref="127" max="32767" attributes="0"/>
-                          <Component id="jLabel14" pref="127" max="32767" attributes="0"/>
+                          <Component id="jLabel13" alignment="1" pref="127" max="32767" attributes="0"/>
                           <Component id="jLabel15" pref="127" max="32767" attributes="0"/>
                           <Component id="jLabel12" alignment="1" max="32767" attributes="0"/>
-                          <Component id="jLabel16" pref="127" max="32767" attributes="0"/>
+                          <Component id="jLabel16" alignment="1" pref="127" max="32767" attributes="0"/>
+                          <Component id="jLabel17" alignment="1" pref="127" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="keahlian" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
-                          <Component id="semester" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
-                          <Component id="keahlian1" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
-                          <Component id="keahlian2" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
-                          <Component id="keahlian3" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
-                          <Component id="keahlian4" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
+                          <Component id="nidn" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
+                          <Component id="telepon" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
+                          <Component id="email" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
+                          <Component id="edukasi" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
@@ -53,7 +51,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="lahir" min="-2" pref="160" max="-2" attributes="0"/>
+                      <Component id="jabatan" min="-2" pref="160" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="jLabel7" max="32767" attributes="0"/>
@@ -110,7 +108,7 @@
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lahir" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Component id="jabatan" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -124,33 +122,28 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="semester" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="keahlian" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="keahlian1" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="keahlian2" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Component id="nidn" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="keahlian3" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Component id="telepon" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel16" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="keahlian4" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Component id="email" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel17" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="edukasi" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Component id="jScrollPane1" min="-2" pref="439" max="-2" attributes="0"/>
@@ -179,7 +172,7 @@
         <Property name="text" type="java.lang.String" value="Prodi"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="lahir">
+    <Component class="javax.swing.JTextField" name="jabatan">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -187,13 +180,8 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lahirActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jabatanActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel11">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Semester"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
@@ -293,20 +281,9 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JTextField" name="semester">
-      <Properties>
-        <Property name="editable" type="boolean" value="false"/>
-        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[200, 200]"/>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="semesterActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JLabel" name="jLabel8">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Tanggal Lahir"/>
+        <Property name="text" type="java.lang.String" value="Jabatan"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="keahlian">
@@ -320,7 +297,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="keahlianActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="keahlian1">
+    <Component class="javax.swing.JTextField" name="nidn">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -328,7 +305,7 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="keahlian1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nidnActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel13">
@@ -336,28 +313,12 @@
         <Property name="text" type="java.lang.String" value="NIDN"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="keahlian2">
-      <Properties>
-        <Property name="editable" type="boolean" value="false"/>
-        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[200, 200]"/>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="keahlian2ActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel14">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Gender"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JLabel" name="jLabel15">
       <Properties>
         <Property name="text" type="java.lang.String" value="Telepon"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="keahlian3">
+    <Component class="javax.swing.JTextField" name="telepon">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -365,7 +326,7 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="keahlian3ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="teleponActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel16">
@@ -373,7 +334,7 @@
         <Property name="text" type="java.lang.String" value="Email"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="keahlian4">
+    <Component class="javax.swing.JTextField" name="email">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -381,7 +342,23 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="keahlian4ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="emailActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel17">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Edukasi Terakhir"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="edukasi">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[200, 200]"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="edukasiActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

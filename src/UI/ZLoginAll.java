@@ -6,13 +6,12 @@ import UI.dosen.DoFrame;
 
 import DAO.UserDAO;
 import DAO.LectureDAO;
+import DAO.StudentDAO;
 
 import Model.user;
 import Model.lecturer;
+import Model.student;
 import Session.UserSession;
-
-import javax.swing.JPasswordField;
-import java.awt.TextField;
 
 import javax.swing.*;
 
@@ -189,6 +188,16 @@ public class ZLoginAll extends javax.swing.JFrame {
                     this.dispose();
                     break;
                 case "STUDENT":
+                    StudentDAO studentDAO = new StudentDAO();
+                    student stud = studentDAO.readStudent(user.getUserId());
+                    
+                    if (stud == null) {
+                        JOptionPane.showMessageDialog(this, "Data student tidak ditemukan");
+                        return;
+                    }
+                    
+                    UserSession.setStudent(stud);
+                    
                     MhsFrame MhsFrame = new MhsFrame();
                     MhsFrame.setVisible(true);
                     this.dispose();

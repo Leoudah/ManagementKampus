@@ -12,6 +12,8 @@ import UI.mahasiswa.mahasiswaPanel.MhsEnroll;
 import UI.mahasiswa.mahasiswaPanel.MhsGrade;
 import UI.mahasiswa.mahasiswaPanel.MhsProfile;
 import java.awt.CardLayout;
+import Session.UserSession;
+import UI.admin.AFrame;
 
 public class MhsFrame extends javax.swing.JFrame {
     private CardLayout cardLayout;
@@ -23,6 +25,18 @@ public class MhsFrame extends javax.swing.JFrame {
     private MhsProfile profilePanel;
     
     public MhsFrame() {
+        if (!UserSession.isStudent()) {
+            JOptionPane.showMessageDialog(this,
+                "Akses ditolak!",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+            this.dispose();
+            ZLoginAll ZLoginAll = new ZLoginAll();
+            ZLoginAll.setVisible(true);
+            return;
+        }
+                
         initComponents();
         initCard();
     }
@@ -124,6 +138,11 @@ public class MhsFrame extends javax.swing.JFrame {
         jMenuBar2.add(jMenu11);
 
         jMenu12.setText("Logout");
+        jMenu12.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu12MouseClicked(evt);
+            }
+        });
         jMenuBar2.add(jMenu12);
 
         setJMenuBar(jMenuBar2);
@@ -165,6 +184,20 @@ public class MhsFrame extends javax.swing.JFrame {
     private void jMenu9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu9ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenu9ActionPerformed
+
+    private void jMenu12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu12MouseClicked
+        int confirm = JOptionPane.showConfirmDialog(
+            this,
+            "Yakin ingin logout?",
+            "Logout",
+            JOptionPane.YES_NO_OPTION
+        );
+        
+        if (confirm == JOptionPane.YES_OPTION) {
+            new ZLoginAll().setVisible(true);
+            this.dispose();
+        }
+    }//GEN-LAST:event_jMenu12MouseClicked
 
     /**
      * @param args the command line arguments

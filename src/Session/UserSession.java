@@ -2,10 +2,12 @@ package Session;
 
 import Model.user;
 import Model.lecturer;
+import Model.student;
 
 public class UserSession {
     private static user currentUser;
     private static lecturer currentLecturer;
+    private static student currentStudent;
 
     //USER LOGIN
     public static void setUser(user u) {
@@ -26,6 +28,14 @@ public class UserSession {
         return currentLecturer;
     }
     
+    public static void setStudent(student s) {
+        currentStudent = s;
+    }
+
+    public static student getStudent() {
+        return currentStudent;
+    }
+    
     //PENGECEKAN LOGIN & ROLE
     public static boolean isLoggedIn() {
         return currentUser != null;
@@ -39,6 +49,11 @@ public class UserSession {
     public static boolean isLecturer() {
         return currentUser != null &&
                "LECTURER".equalsIgnoreCase(currentUser.getRole().trim());
+    }
+    
+    public static boolean isStudent() {
+        return currentUser != null &&
+               "STUDENT".equalsIgnoreCase(currentUser.getRole().trim());
     }
 
 

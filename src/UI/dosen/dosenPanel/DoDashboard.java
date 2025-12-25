@@ -45,8 +45,30 @@ public class DoDashboard extends javax.swing.JPanel {
             throw new IllegalStateException("Lecturer session is null");
         }
         
+        prodi.setText(lec.getProdi());
+        nidn.setText(String.valueOf(lec.getNidn()));
         nama.setText(lec.getFullName());
-        nama.setEditable(false); // dashboard tidak bisa edit
+        nip.setText(String.valueOf(lec.getNip()));
+        kelamin.setText(lec.getGender());
+        keahlian.setText(lec.getBidangKeahlian());
+        telepon.setText(lec.getTelepon());
+        email.setText(lec.getEmail());
+        jabatan.setText(lec.getTitle());
+        email.setText(lec.getEmail());
+        edukasi.setText(lec.getEdukasiTertinggi());
+
+        prodi.setEditable(false);
+        nidn.setEditable(false);
+        nama.setEditable(false);
+        nip.setEditable(false);
+        kelamin.setEditable(false);
+        keahlian.setEditable(false);
+        telepon.setEditable(false);
+        email.setEditable(false);
+        jabatan.setEditable(false);
+        edukasi.setEditable(false);
+        
+        jLabel1.setText("Halo, " + lec.getFullName());
     }
 
     @SuppressWarnings("unchecked")
@@ -56,8 +78,7 @@ public class DoDashboard extends javax.swing.JPanel {
         jLabel9 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        lahir = new javax.swing.JTextField();
-        jLabel11 = new javax.swing.JLabel();
+        jabatan = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         kelamin = new javax.swing.JTextField();
         nip = new javax.swing.JTextField();
@@ -69,17 +90,16 @@ public class DoDashboard extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        semester = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         keahlian = new javax.swing.JTextField();
-        keahlian1 = new javax.swing.JTextField();
+        nidn = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
-        keahlian2 = new javax.swing.JTextField();
-        jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        keahlian3 = new javax.swing.JTextField();
+        telepon = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
-        keahlian4 = new javax.swing.JTextField();
+        email = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        edukasi = new javax.swing.JTextField();
 
         setPreferredSize(new java.awt.Dimension(800, 600));
 
@@ -90,15 +110,13 @@ public class DoDashboard extends javax.swing.JPanel {
 
         jLabel10.setText("Prodi");
 
-        lahir.setEditable(false);
-        lahir.setPreferredSize(new java.awt.Dimension(200, 200));
-        lahir.addActionListener(new java.awt.event.ActionListener() {
+        jabatan.setEditable(false);
+        jabatan.setPreferredSize(new java.awt.Dimension(200, 200));
+        jabatan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lahirActionPerformed(evt);
+                jabatanActionPerformed(evt);
             }
         });
-
-        jLabel11.setText("Semester");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setText("Data Pegawai :");
@@ -157,15 +175,7 @@ public class DoDashboard extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        semester.setEditable(false);
-        semester.setPreferredSize(new java.awt.Dimension(200, 200));
-        semester.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                semesterActionPerformed(evt);
-            }
-        });
-
-        jLabel8.setText("Tanggal Lahir");
+        jLabel8.setText("Jabatan");
 
         keahlian.setEditable(false);
         keahlian.setPreferredSize(new java.awt.Dimension(200, 200));
@@ -175,43 +185,43 @@ public class DoDashboard extends javax.swing.JPanel {
             }
         });
 
-        keahlian1.setEditable(false);
-        keahlian1.setPreferredSize(new java.awt.Dimension(200, 200));
-        keahlian1.addActionListener(new java.awt.event.ActionListener() {
+        nidn.setEditable(false);
+        nidn.setPreferredSize(new java.awt.Dimension(200, 200));
+        nidn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                keahlian1ActionPerformed(evt);
+                nidnActionPerformed(evt);
             }
         });
 
         jLabel13.setText("NIDN");
 
-        keahlian2.setEditable(false);
-        keahlian2.setPreferredSize(new java.awt.Dimension(200, 200));
-        keahlian2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                keahlian2ActionPerformed(evt);
-            }
-        });
-
-        jLabel14.setText("Gender");
-
         jLabel15.setText("Telepon");
 
-        keahlian3.setEditable(false);
-        keahlian3.setPreferredSize(new java.awt.Dimension(200, 200));
-        keahlian3.addActionListener(new java.awt.event.ActionListener() {
+        telepon.setEditable(false);
+        telepon.setPreferredSize(new java.awt.Dimension(200, 200));
+        telepon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                keahlian3ActionPerformed(evt);
+                teleponActionPerformed(evt);
             }
         });
 
         jLabel16.setText("Email");
 
-        keahlian4.setEditable(false);
-        keahlian4.setPreferredSize(new java.awt.Dimension(200, 200));
-        keahlian4.addActionListener(new java.awt.event.ActionListener() {
+        email.setEditable(false);
+        email.setPreferredSize(new java.awt.Dimension(200, 200));
+        email.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                keahlian4ActionPerformed(evt);
+                emailActionPerformed(evt);
+            }
+        });
+
+        jLabel17.setText("Edukasi Terakhir");
+
+        edukasi.setEditable(false);
+        edukasi.setPreferredSize(new java.awt.Dimension(200, 200));
+        edukasi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                edukasiActionPerformed(evt);
             }
         });
 
@@ -226,20 +236,18 @@ public class DoDashboard extends javax.swing.JPanel {
                     .addComponent(jLabel4)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
-                            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
                             .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
                             .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE))
+                            .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
+                            .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(keahlian, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(semester, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(keahlian1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(keahlian2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(keahlian3, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(keahlian4, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(nidn, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(telepon, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(edukasi, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -247,7 +255,7 @@ public class DoDashboard extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lahir, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jabatan, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -291,7 +299,7 @@ public class DoDashboard extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
-                            .addComponent(lahir, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jabatan, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(8, 8, 8)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
@@ -302,36 +310,32 @@ public class DoDashboard extends javax.swing.JPanel {
                             .addComponent(jLabel10))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel11)
-                            .addComponent(semester, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel12)
                             .addComponent(keahlian, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel13)
-                            .addComponent(keahlian1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel14)
-                            .addComponent(keahlian2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(nidn, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel15)
-                            .addComponent(keahlian3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(telepon, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel16)
-                            .addComponent(keahlian4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel17)
+                            .addComponent(edukasi, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(38, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void lahirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lahirActionPerformed
+    private void jabatanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jabatanActionPerformed
 
-    }//GEN-LAST:event_lahirActionPerformed
+    }//GEN-LAST:event_jabatanActionPerformed
 
     private void kelaminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kelaminActionPerformed
 
@@ -349,40 +353,37 @@ public class DoDashboard extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_prodiActionPerformed
 
-    private void semesterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_semesterActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_semesterActionPerformed
-
     private void keahlianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keahlianActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_keahlianActionPerformed
 
-    private void keahlian1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keahlian1ActionPerformed
+    private void nidnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nidnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_keahlian1ActionPerformed
+    }//GEN-LAST:event_nidnActionPerformed
 
-    private void keahlian2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keahlian2ActionPerformed
+    private void teleponActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teleponActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_keahlian2ActionPerformed
+    }//GEN-LAST:event_teleponActionPerformed
 
-    private void keahlian3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keahlian3ActionPerformed
+    private void emailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_keahlian3ActionPerformed
+    }//GEN-LAST:event_emailActionPerformed
 
-    private void keahlian4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keahlian4ActionPerformed
+    private void edukasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edukasiActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_keahlian4ActionPerformed
+    }//GEN-LAST:event_edukasiActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField edukasi;
+    private javax.swing.JTextField email;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
@@ -391,16 +392,13 @@ public class DoDashboard extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jabatan;
     private javax.swing.JTextField keahlian;
-    private javax.swing.JTextField keahlian1;
-    private javax.swing.JTextField keahlian2;
-    private javax.swing.JTextField keahlian3;
-    private javax.swing.JTextField keahlian4;
     private javax.swing.JTextField kelamin;
-    private javax.swing.JTextField lahir;
     private javax.swing.JTextField nama;
+    private javax.swing.JTextField nidn;
     private javax.swing.JTextField nip;
     private javax.swing.JTextField prodi;
-    private javax.swing.JTextField semester;
+    private javax.swing.JTextField telepon;
     // End of variables declaration//GEN-END:variables
 }

@@ -3,7 +3,6 @@ package UI.admin;
 
 import UI.ZLoginAll;
 import UI.admin.adminPanel.ADashboard;
-import UI.admin.adminPanel.AManageAccount;
 import UI.admin.adminPanel.AManageCourse;
 import UI.admin.adminPanel.AManageEnrollment;
 import UI.admin.adminPanel.AManageGraduation;
@@ -11,8 +10,6 @@ import UI.admin.adminPanel.AManageLecturer;
 import UI.admin.adminPanel.AManageProdi;
 import UI.admin.adminPanel.AManageFakultas;
 import UI.admin.adminPanel.AManageStudents;
-import UI.admin.adminPanel.AlinkUser;
-import UI.admin.adminPanel.AlinkUserDosen;
 
 import java.awt.CardLayout;
 import javax.swing.JOptionPane;
@@ -23,7 +20,6 @@ public class AFrame extends javax.swing.JFrame {
     private CardLayout cardLayout;
 
     private ADashboard dashboardPanel;
-    private AManageAccount manageAccountPanel;
     private AManageCourse manageCoursePanel;
     private AManageEnrollment manageEnrollmentPanel;
     private AManageGraduation manageGraduationPanel;
@@ -31,8 +27,6 @@ public class AFrame extends javax.swing.JFrame {
     private AManageProdi manageProdiPanel;
     private AManageFakultas manageFakultasPanel;
     private AManageStudents manageStudentsPanel;
-    private AlinkUser linkUserPanel;
-    private AlinkUserDosen linkUserDosenPanel;
 
 
     public AFrame() {
@@ -55,7 +49,6 @@ public class AFrame extends javax.swing.JFrame {
         jPanel1.setLayout(cardLayout);
 
         dashboardPanel        = new ADashboard();
-        manageAccountPanel    = new AManageAccount();
         manageCoursePanel     = new AManageCourse();
         manageEnrollmentPanel = new AManageEnrollment();
         manageGraduationPanel = new AManageGraduation();
@@ -63,11 +56,8 @@ public class AFrame extends javax.swing.JFrame {
         manageProdiPanel      = new AManageProdi();
         manageFakultasPanel   = new AManageFakultas();
         manageStudentsPanel   = new AManageStudents();
-        linkUserPanel         = new AlinkUser();
-        linkUserDosenPanel    = new AlinkUserDosen();
 
         jPanel1.add(dashboardPanel,        "DASHBOARD");
-        jPanel1.add(manageAccountPanel,    "ACCOUNT");
         jPanel1.add(manageCoursePanel,     "COURSE");
         jPanel1.add(manageEnrollmentPanel, "ENROLLMENT");
         jPanel1.add(manageGraduationPanel, "GRADUATION");
@@ -75,8 +65,6 @@ public class AFrame extends javax.swing.JFrame {
         jPanel1.add(manageProdiPanel,      "PRODI");
         jPanel1.add(manageFakultasPanel,   "FAKULTAS");
         jPanel1.add(manageStudentsPanel,   "STUDENTS");
-        jPanel1.add(linkUserPanel,         "LINK_USER");
-        jPanel1.add(linkUserDosenPanel,    "LINK_USER_DOSEN");
 
         cardLayout.show(jPanel1, "DASHBOARD");
     }
@@ -106,17 +94,12 @@ public class AFrame extends javax.swing.JFrame {
         jMenu7 = new javax.swing.JMenu();
         Mahasiswa = new javax.swing.JMenuItem();
         Dosen = new javax.swing.JMenuItem();
-        Akun = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        LinkMahasiswa = new javax.swing.JMenuItem();
-        LinkDosen = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
 
         jCheckBoxMenuItem1.setSelected(true);
         jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(900, 700));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -230,49 +213,6 @@ public class AFrame extends javax.swing.JFrame {
         });
         jMenu7.add(Dosen);
 
-        Akun.setText("Akun");
-        Akun.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                AkunMouseClicked(evt);
-            }
-        });
-        Akun.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AkunActionPerformed(evt);
-            }
-        });
-        jMenu7.add(Akun);
-
-        jMenu3.setText("Link User");
-
-        LinkMahasiswa.setText("Mahasiswa");
-        LinkMahasiswa.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                LinkMahasiswaMouseClicked(evt);
-            }
-        });
-        LinkMahasiswa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LinkMahasiswaActionPerformed(evt);
-            }
-        });
-        jMenu3.add(LinkMahasiswa);
-
-        LinkDosen.setText("Dosen");
-        LinkDosen.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                LinkDosenMouseClicked(evt);
-            }
-        });
-        LinkDosen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LinkDosenActionPerformed(evt);
-            }
-        });
-        jMenu3.add(LinkDosen);
-
-        jMenu7.add(jMenu3);
-
         jMenuBar1.add(jMenu7);
 
         jMenu4.setText("Logout");
@@ -306,18 +246,6 @@ public class AFrame extends javax.swing.JFrame {
     private void DosenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DosenActionPerformed
         cardLayout.show(jPanel1, "LECTURER");
     }//GEN-LAST:event_DosenActionPerformed
-
-    private void AkunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AkunActionPerformed
-        cardLayout.show(jPanel1, "ACCOUNT");
-    }//GEN-LAST:event_AkunActionPerformed
-
-    private void LinkMahasiswaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LinkMahasiswaActionPerformed
-        cardLayout.show(jPanel1, "LINK_USER");
-    }//GEN-LAST:event_LinkMahasiswaActionPerformed
-
-    private void LinkDosenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LinkDosenActionPerformed
-        cardLayout.show(jPanel1, "LINK_USER_DOSEN");
-    }//GEN-LAST:event_LinkDosenActionPerformed
 
     private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
         int confirm = JOptionPane.showConfirmDialog(
@@ -360,18 +288,6 @@ public class AFrame extends javax.swing.JFrame {
     private void DosenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DosenMouseClicked
         cardLayout.show(jPanel1, "LECTURER");
     }//GEN-LAST:event_DosenMouseClicked
-
-    private void AkunMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AkunMouseClicked
-        cardLayout.show(jPanel1, "ACCOUNT");
-    }//GEN-LAST:event_AkunMouseClicked
-
-    private void LinkMahasiswaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LinkMahasiswaMouseClicked
-        cardLayout.show(jPanel1, "LINK_USER");
-    }//GEN-LAST:event_LinkMahasiswaMouseClicked
-
-    private void LinkDosenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LinkDosenMouseClicked
-        cardLayout.show(jPanel1, "LINK_USER_DOSEN");
-    }//GEN-LAST:event_LinkDosenMouseClicked
 
     private void FakultasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FakultasActionPerformed
         cardLayout.show(jPanel1, "FAKULTAS");
@@ -425,20 +341,16 @@ public class AFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem Akun;
     private javax.swing.JMenuItem Course;
     private javax.swing.JMenu Dashboard;
     private javax.swing.JMenuItem Dosen;
     private javax.swing.JMenuItem Enrollment;
     private javax.swing.JMenuItem Fakultas;
     private javax.swing.JMenu Graduation;
-    private javax.swing.JMenuItem LinkDosen;
-    private javax.swing.JMenuItem LinkMahasiswa;
     private javax.swing.JMenuItem Mahasiswa;
     private javax.swing.JMenuItem Prodi;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu7;
