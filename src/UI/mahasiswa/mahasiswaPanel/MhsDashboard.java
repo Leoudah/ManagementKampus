@@ -5,56 +5,267 @@
 package UI.mahasiswa.mahasiswaPanel;
 
 import Database.koneksiDB;
-import java.sql.*;
-import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.sql.*;
+import java.text.SimpleDateFormat;
 
-public class MhsDashboard extends JPanel {
+/**
+ *
+ * @author 62895
+ */
+public class MhsDashboard extends javax.swing.JPanel {
+    private int studentId = 1; // Ganti dengan ID mahasiswa yang login
+    private DefaultTableModel tableModel;
 
-    private Connection con;
-   
-    private JLabel jLabelTitle;
-
+    /**
+     * Creates new form MhsDashboard
+     */
     public MhsDashboard() {
-    con = new koneksiDB().connect();
-    initComponents(); // auto-generated
-    loadData();        // load data ke jTable
-}
-
-   
-
-  private void loadData() {
-    try {
-        Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT nim, full_name, program_id, entry_year, status FROM student");
-
-        DefaultTableModel model = new DefaultTableModel(
-            new Object[]{"NIM", "Nama", "Program ID", "Tahun Masuk", "Status"}, 0
-        );
-
-        while (rs.next()) {
-            model.addRow(new Object[]{
-                rs.getString("nim"),
-                rs.getString("full_name"),
-                rs.getInt("program_id"),
-                rs.getInt("entry_year"),
-                rs.getString("status")
-            });
-        }
-
-        jTable1.setModel(model);
-
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(this, "Error loading data: " + e.getMessage());
-        e.printStackTrace();
+        initComponents();
+        initializeTableModel();
+        loadStudentData();
+        loadCourseData();
     }
-}
+    
+    private void initializeTableModel() {
+        tableModel = new DefaultTableModel(
+            new Object[][] {},
+            new String[] {"Mata Kuliah", "Semester", "Grade"}
+        );
+        jTable1.setModel(tableModel);
+    }
+    
+    private void loadStudentData() {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        
+        try {
+            koneksiDB koneksi = new koneksiDB();
+            conn = koneksi.connect();
+            
+            // Query untuk mengambil data mahasiswa
+            String sql = "SELECT * FROM student WHERE student_id = ?";
+            
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, studentId);
+            rs = pstmt.executeQuery();
+            
+            if (rs.next()) {
+                // Set judul dengan nama mahasiswa
+                jLabel1.setText("Halo, " + rs.getString("full_name"));
+                
+                // Isi data mahasiswa ke textfield
+                nimField.setText(rs.getString("nim"));
+                namaField.setText(rs.getString("full_name"));
+                
+                // Format tanggal lahir
+                Date birthDate = rs.getDate("birth_date");
+                if (birthDate != null) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                    birthDateField.setText(sdf.format(birthDate));
+                } else {
+                    birthDateField.setText("");
+                }
+                
+                genderField.setText(rs.getString("gender").equals("M") ? "Laki-laki" : "Perempuan");
+                
+                // Format tanggal masuk
+                Date admissionDate = rs.getDate("admission_date");
+                if (admissionDate != null) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                    admissionDateField.setText(sdf.format(admissionDate));
+                } else {
+                    admissionDateField.setText("");
+                }
+                
+                // Entry year
+                entryYearField.setText(String.valueOf(rs.getInt("entry_year")));
+                
+                // Program studi
+                prodiField.setText("Program ID: " + rs.getInt("program_id"));
+                
+                // Hitung IPK
+                calculateGPA();
+            } else {
+                // Kosongkan semua field jika mahasiswa tidak ditemukan
+                jLabel1.setText("Halo, Mahasiswa");
+                nimField.setText("");
+                namaField.setText("");
+                birthDateField.setText("");
+                genderField.setText("");
+                admissionDateField.setText("");
+                entryYearField.setText("");
+                prodiField.setText("");
+                gpaField.setText("");
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Error load student data: " + e.getMessage());
+            e.printStackTrace();
+            // Kosongkan semua field jika error
+            jLabel1.setText("Halo, Mahasiswa");
+            nimField.setText("");
+            namaField.setText("");
+            birthDateField.setText("");
+            genderField.setText("");
+            admissionDateField.setText("");
+            entryYearField.setText("");
+            prodiField.setText("");
+            gpaField.setText("");
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    private void loadCourseData() {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        
+        try {
+            koneksiDB koneksi = new koneksiDB();
+            conn = koneksi.connect();
+            
+            // Cek dulu apakah tabel enrollment ada
+            DatabaseMetaData meta = conn.getMetaData();
+            ResultSet tables = meta.getTables(null, null, "enrollment", null);
+            
+            if (!tables.next()) {
+                // Tabel tidak ada, kosongkan tabel saja
+                System.out.println("Table 'enrollment' tidak ditemukan");
+                tableModel.setRowCount(0);
+                return;
+            }
+            
+            // Query untuk mengambil mata kuliah mahasiswa
+            String sql = "SELECT c.name as course_name, " +
+                         "       c.course_code, " +
+                         "       e.grade, " +
+                         "       c.semester_suggestion " +
+                         "FROM enrollment e " +
+                         "LEFT JOIN course c ON e.course_id = c.course_id " +
+                         "WHERE e.student_id = ? " +
+                         "ORDER BY c.name ASC";
+            
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, studentId);
+            rs = pstmt.executeQuery();
+            
+            // Clear table terlebih dahulu
+            tableModel.setRowCount(0);
+            
+            // Isi data ke table
+            while (rs.next()) {
+                String courseName = rs.getString("course_name");
+                String courseCode = rs.getString("course_code");
+                String grade = rs.getString("grade");
+                int semester = rs.getInt("semester_suggestion");
+                
+                // Format: Kode - Mata Kuliah
+                String courseDisplay;
+                if (courseCode != null && !courseCode.isEmpty()) {
+                    courseDisplay = courseCode + " - " + courseName;
+                } else {
+                    courseDisplay = courseName;
+                }
+                
+                // Jika grade null, kosongkan
+                if (grade == null || grade.trim().isEmpty()) {
+                    grade = "";
+                }
+                
+                // Format semester
+                String semesterDisplay = "Semester " + semester;
+                
+                tableModel.addRow(new Object[]{courseDisplay, semesterDisplay, grade});
+            }
+            
+            // TIDAK ADA DATA DUMMY DI SINI!
+            // Jika tidak ada data, tabel akan kosong
+            
+        } catch (SQLException e) {
+            System.out.println("Error load course data: " + e.getMessage());
+            e.printStackTrace();
+            // TIDAK ADA DATA DUMMY DI SINI!
+            // Jika error, tabel akan kosong
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    private void calculateGPA() {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        
+        try {
+            koneksiDB koneksi = new koneksiDB();
+            conn = koneksi.connect();
+            
+            // Query untuk menghitung IPK
+            String sql = "SELECT " +
+                         "  SUM(CASE grade " +
+                         "    WHEN 'A' THEN 4 * c.credits " +
+                         "    WHEN 'B' THEN 3 * c.credits " +
+                         "    WHEN 'C' THEN 2 * c.credits " +
+                         "    WHEN 'D' THEN 1 * c.credits " +
+                         "    WHEN 'E' THEN 0 * c.credits " +
+                         "    ELSE 0 " +
+                         "  END) as total_nilai, " +
+                         "  SUM(c.credits) as total_sks " +
+                         "FROM enrollment e " +
+                         "LEFT JOIN course c ON e.course_id = c.course_id " +
+                         "WHERE e.student_id = ? AND e.grade IS NOT NULL AND e.grade IN ('A','B','C','D','E')";
+            
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, studentId);
+            rs = pstmt.executeQuery();
+            
+            if (rs.next()) {
+                double totalNilai = rs.getDouble("total_nilai");
+                double totalSKS = rs.getDouble("total_sks");
+                
+                if (totalSKS > 0) {
+                    double ipk = totalNilai / totalSKS;
+                    // Format IPK dengan 2 angka dibelakang koma
+                    gpaField.setText(String.format("%.2f", ipk));
+                } else {
+                    gpaField.setText("0.00");
+                }
+            } else {
+                gpaField.setText("0.00");
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Error calculate GPA: " + e.getMessage());
+            e.printStackTrace();
+            gpaField.setText("0.00");
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-
-
-
-
-
+    
+    // ... [KODE initComponents() DAN VARIABLES DECLARATION TETAP SAMA] ...
 
 
     /**
@@ -66,106 +277,106 @@ public class MhsDashboard extends JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField25 = new javax.swing.JTextField();
+        nimField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField26 = new javax.swing.JTextField();
+        birthDateField = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField27 = new javax.swing.JTextField();
+        genderField = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextField28 = new javax.swing.JTextField();
+        entryYearField = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jTextField30 = new javax.swing.JTextField();
+        admissionDateField = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jTextField31 = new javax.swing.JTextField();
+        prodiField = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        jTextField32 = new javax.swing.JTextField();
+        gpaField = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        jTextField33 = new javax.swing.JTextField();
+        namaField = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
-        jTextField25.setEditable(false);
-        jTextField25.setPreferredSize(new java.awt.Dimension(200, 200));
-        jTextField25.addActionListener(new java.awt.event.ActionListener() {
+        nimField.setEditable(false);
+        nimField.setPreferredSize(new java.awt.Dimension(200, 200));
+        nimField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField25ActionPerformed(evt);
+                nimFieldActionPerformed(evt);
             }
         });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("Nilai Mahasiswa");
 
-        jTextField26.setEditable(false);
-        jTextField26.setPreferredSize(new java.awt.Dimension(200, 200));
-        jTextField26.addActionListener(new java.awt.event.ActionListener() {
+        birthDateField.setEditable(false);
+        birthDateField.setPreferredSize(new java.awt.Dimension(200, 200));
+        birthDateField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField26ActionPerformed(evt);
+                birthDateFieldActionPerformed(evt);
             }
         });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setText("Data Mahasiswa :");
 
-        jTextField27.setEditable(false);
-        jTextField27.setPreferredSize(new java.awt.Dimension(200, 200));
-        jTextField27.addActionListener(new java.awt.event.ActionListener() {
+        genderField.setEditable(false);
+        genderField.setPreferredSize(new java.awt.Dimension(200, 200));
+        genderField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField27ActionPerformed(evt);
+                genderFieldActionPerformed(evt);
             }
         });
 
         jLabel6.setText("Nim");
 
-        jTextField28.setEditable(false);
-        jTextField28.setPreferredSize(new java.awt.Dimension(200, 200));
-        jTextField28.addActionListener(new java.awt.event.ActionListener() {
+        entryYearField.setEditable(false);
+        entryYearField.setPreferredSize(new java.awt.Dimension(200, 200));
+        entryYearField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField28ActionPerformed(evt);
+                entryYearFieldActionPerformed(evt);
             }
         });
 
         jLabel7.setText("Nama ");
 
-        jTextField30.setEditable(false);
-        jTextField30.setPreferredSize(new java.awt.Dimension(200, 200));
-        jTextField30.addActionListener(new java.awt.event.ActionListener() {
+        admissionDateField.setEditable(false);
+        admissionDateField.setPreferredSize(new java.awt.Dimension(200, 200));
+        admissionDateField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField30ActionPerformed(evt);
+                admissionDateFieldActionPerformed(evt);
             }
         });
 
         jLabel8.setText("Tanggal Lahair");
 
-        jTextField31.setEditable(false);
-        jTextField31.setPreferredSize(new java.awt.Dimension(200, 200));
-        jTextField31.addActionListener(new java.awt.event.ActionListener() {
+        prodiField.setEditable(false);
+        prodiField.setPreferredSize(new java.awt.Dimension(200, 200));
+        prodiField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField31ActionPerformed(evt);
+                prodiFieldActionPerformed(evt);
             }
         });
 
         jLabel9.setText("Jenis Kelamin");
 
-        jTextField32.setEditable(false);
-        jTextField32.setPreferredSize(new java.awt.Dimension(200, 200));
-        jTextField32.addActionListener(new java.awt.event.ActionListener() {
+        gpaField.setEditable(false);
+        gpaField.setPreferredSize(new java.awt.Dimension(200, 200));
+        gpaField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField32ActionPerformed(evt);
+                gpaFieldActionPerformed(evt);
             }
         });
 
         jLabel10.setText("Tanggal Masuki");
 
-        jTextField33.setEditable(false);
-        jTextField33.setPreferredSize(new java.awt.Dimension(200, 200));
-        jTextField33.addActionListener(new java.awt.event.ActionListener() {
+        namaField.setEditable(false);
+        namaField.setPreferredSize(new java.awt.Dimension(200, 200));
+        namaField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField33ActionPerformed(evt);
+                namaFieldActionPerformed(evt);
             }
         });
 
@@ -174,22 +385,11 @@ public class MhsDashboard extends JPanel {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Halo, {Nama Mahasiswa}");
 
-        jLabel12.setText("Fakultas / Prodi");
+        jLabel12.setText("Prodi");
 
         jLabel13.setText("IPK");
 
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 543, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 531, Short.MAX_VALUE)
-        );
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -203,6 +403,23 @@ public class MhsDashboard extends JPanel {
             }
         ));
         jScrollPane1.setViewportView(jTable1);
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 521, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 588, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -226,28 +443,27 @@ public class MhsDashboard extends JPanel {
                                     .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jTextField33, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                                    .addComponent(jTextField30, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                                    .addComponent(jTextField27, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                                    .addComponent(jTextField28, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                                    .addComponent(jTextField26, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                                    .addComponent(jTextField25, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                                    .addComponent(namaField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                                    .addComponent(admissionDateField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                                    .addComponent(genderField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                                    .addComponent(entryYearField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                                    .addComponent(birthDateField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                                    .addComponent(nimField, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                             .addComponent(jLabel8)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
                                     .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(11, 11, 11)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField32, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-                                    .addComponent(jTextField31, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))))
+                                    .addComponent(gpaField, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+                                    .addComponent(prodiField, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE)
-                                .addContainerGap())))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -261,79 +477,83 @@ public class MhsDashboard extends JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 483, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
-                            .addComponent(jTextField25, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(nimField, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
-                            .addComponent(jTextField33, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(namaField, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(8, 8, 8)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
-                            .addComponent(jTextField26, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(birthDateField, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(6, 6, 6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
-                            .addComponent(jTextField27, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(genderField, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(6, 6, 6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel10)
-                            .addComponent(jTextField28, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(entryYearField, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
-                            .addComponent(jTextField30, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(admissionDateField, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel12)
-                            .addComponent(jTextField31, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(prodiField, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel13)
-                            .addComponent(jTextField32, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 588, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(gpaField, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(292, Short.MAX_VALUE))))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField25ActionPerformed
+    private void nimFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nimFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField25ActionPerformed
+    }//GEN-LAST:event_nimFieldActionPerformed
 
-    private void jTextField26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField26ActionPerformed
+    private void birthDateFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_birthDateFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField26ActionPerformed
+    }//GEN-LAST:event_birthDateFieldActionPerformed
 
-    private void jTextField27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField27ActionPerformed
+    private void genderFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genderFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField27ActionPerformed
+    }//GEN-LAST:event_genderFieldActionPerformed
 
-    private void jTextField28ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField28ActionPerformed
+    private void entryYearFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entryYearFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField28ActionPerformed
+    }//GEN-LAST:event_entryYearFieldActionPerformed
 
-    private void jTextField30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField30ActionPerformed
+    private void admissionDateFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_admissionDateFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField30ActionPerformed
+    }//GEN-LAST:event_admissionDateFieldActionPerformed
 
-    private void jTextField31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField31ActionPerformed
+    private void prodiFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prodiFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField31ActionPerformed
+    }//GEN-LAST:event_prodiFieldActionPerformed
 
-    private void jTextField32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField32ActionPerformed
+    private void gpaFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gpaFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField32ActionPerformed
+    }//GEN-LAST:event_gpaFieldActionPerformed
 
-    private void jTextField33ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField33ActionPerformed
+    private void namaFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namaFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField33ActionPerformed
+    }//GEN-LAST:event_namaFieldActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField admissionDateField;
+    private javax.swing.JTextField birthDateField;
+    private javax.swing.JTextField entryYearField;
+    private javax.swing.JTextField genderField;
+    private javax.swing.JTextField gpaField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -345,16 +565,11 @@ public class MhsDashboard extends JPanel {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField25;
-    private javax.swing.JTextField jTextField26;
-    private javax.swing.JTextField jTextField27;
-    private javax.swing.JTextField jTextField28;
-    private javax.swing.JTextField jTextField30;
-    private javax.swing.JTextField jTextField31;
-    private javax.swing.JTextField jTextField32;
-    private javax.swing.JTextField jTextField33;
+    private javax.swing.JTextField namaField;
+    private javax.swing.JTextField nimField;
+    private javax.swing.JTextField prodiField;
     // End of variables declaration//GEN-END:variables
 }
