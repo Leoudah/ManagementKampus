@@ -3,7 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package UI.dosen.dosenPanel;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.table.DefaultTableModel;
+import DAO.CourseDAO;
 import UI.admin.AFrame;
 import UI.mahasiswa.MhsFrame;
 import UI.dosen.DoFrame;
@@ -23,6 +28,7 @@ public class DoDashboard extends javax.swing.JPanel {
     public DoDashboard() {
         initComponents();
         loadData();
+        loadCourses();
     }
     
 //    private int lecturerId;
@@ -70,6 +76,49 @@ public class DoDashboard extends javax.swing.JPanel {
         
         jLabel1.setText("Halo, " + lec.getFullName());
     }
+    private void loadCourses() {
+    lecturer lec = UserSession.getLecturer();
+    if (lec == null) return;
+
+    try {
+        // Buat instance koneksiDB
+        koneksiDB db = new koneksiDB();
+        Connection con = db.connect(); // pakai connect()
+
+        String sql = "SELECT course_code, name, credits, semester_suggestion FROM course WHERE lecturer_id = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, lec.getLecturerId());
+        ResultSet rs = ps.executeQuery();
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Kode");
+        model.addColumn("Mata Kuliah");
+        model.addColumn("SKS");
+        model.addColumn("Semester");
+
+        while(rs.next()) {
+            model.addRow(new Object[]{
+                rs.getString("course_code"),
+                rs.getString("name"),
+                rs.getInt("credits"),
+                rs.getInt("semester_suggestion")
+            });
+        }
+
+        jTable1.setModel(model);
+
+        // Tutup koneksi
+        rs.close();
+        ps.close();
+        con.close();
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Gagal memuat daftar mata kuliah: " + e.getMessage());
+    }
+}
+
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
