@@ -1,7 +1,7 @@
 package DAO;
 
 import Database.koneksiDB;
-import Model.User;
+import Model.user;
 
 import java.sql.*;
 import java.sql.Connection;
@@ -12,7 +12,7 @@ public class UserDAO {
 
     private koneksiDB db = new koneksiDB();
 
-    public User login(String username, String password) {
+    public user login(String username, String password) {
 
         String sql = "SELECT * FROM user_account WHERE username=? AND password_hash=? AND status='ACTIVE'";
 
@@ -24,7 +24,7 @@ public class UserDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return new User(
+                    return new user(
                         rs.getInt("user_id"),
                         rs.getString("password_hash"),
                         rs.getString("username"),
@@ -39,10 +39,10 @@ public class UserDAO {
             e.printStackTrace();
         }
 
-        return null; // Username/password salah atau User tidak aktif
+        return null; // Username/password salah atau user tidak aktif
     }
 
-    public int create(User user) {
+    public int create(user user) {
 
         String sql = """
             INSERT INTO user_account 

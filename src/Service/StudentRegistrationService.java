@@ -2,8 +2,8 @@ package Service;
 
 import DAO.StudentDAO;
 import DAO.UserDAO;
-import Model.Student;
-import Model.User;
+import Model.student;
+import Model.user;
 
 import java.security.MessageDigest;
 
@@ -12,7 +12,7 @@ public class StudentRegistrationService {
     private final StudentDAO studentDAO = new StudentDAO();
     private final UserDAO userDAO = new UserDAO();
 
-    public boolean registerStudent(Student studentInput,
+    public boolean registerStudent(student studentInput,
                                    String facultyCode,
                                    String programCode,
                                    String lastName) {
@@ -37,7 +37,7 @@ public class StudentRegistrationService {
         String passwordHash = hashPassword("mahasiswaUnud123");
 
         // 5. Insert user_account
-        User user = new User(0, username, passwordHash, email, "STUDENT");
+        user user = new user(0, username, passwordHash, email, "STUDENT");
         int userId = userDAO.create(user);
 
         if (userId <= 0) {

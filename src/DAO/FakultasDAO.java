@@ -1,15 +1,15 @@
 package DAO;
 
 import Database.koneksiDB;
-import Model.Fakultas;
+import Model.fakultas;
 import java.sql.*;
 import java.util.*;
 
 public class FakultasDAO {
     private koneksiDB db = new koneksiDB();
 
-    public List<Fakultas> getAll() {
-        List<Fakultas> list = new ArrayList<>();
+    public List<fakultas> getAll() {
+        List<fakultas> list = new ArrayList<>();
         String sql = "SELECT * FROM fakultas ORDER BY name";
 
         try (Connection c = db.connect();
@@ -17,7 +17,7 @@ public class FakultasDAO {
              ResultSet r = s.executeQuery(sql)) {
 
             while (r.next()) {
-                list.add(new Fakultas(
+                list.add(new fakultas(
                     r.getInt("faculty_id"),
                     r.getString("code"),
                     r.getString("name"),
@@ -30,7 +30,7 @@ public class FakultasDAO {
         return list;
     }
 
-    public boolean insert(Fakultas f) {
+    public boolean insert(fakultas f) {
         String sql = "INSERT INTO fakultas(code, name, description) VALUES (?,?,?)";
         try (Connection c = db.connect();
              PreparedStatement p = c.prepareStatement(sql)) {
@@ -46,7 +46,7 @@ public class FakultasDAO {
         return false;
     }
 
-    public boolean update(Fakultas f) {
+    public boolean update(fakultas f) {
         String sql = """
             UPDATE fakultas
             SET code=?, name=?, description=?

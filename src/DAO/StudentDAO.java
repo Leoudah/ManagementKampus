@@ -1,8 +1,8 @@
 package DAO;
 
 import Database.koneksiDB;
-import Model.Student;
-import Model.User;
+import Model.student;
+import Model.user;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ public class StudentDAO {
 
     private koneksiDB db = new koneksiDB();
 
-    public Student findByStudentId(int userId) {
+    public student findByStudentId(int userId) {
         String sql = """
             SELECT
                 s.student_id,
@@ -44,7 +44,7 @@ public class StudentDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return new Student(
+                    return new student(
                         rs.getInt("student_id"),
                         rs.getInt("user_id"),
                         rs.getInt("program_id"),
@@ -98,7 +98,7 @@ public class StudentDAO {
         return 0; // default aman
     }
     
-    public boolean create(Student student) {
+    public boolean create(student student) {
 
         String sql = """
             INSERT INTO student (
@@ -145,8 +145,8 @@ public class StudentDAO {
         return false;
     }
    
-    public List<Student> findAll() {
-        List<Student> list = new ArrayList<>();
+    public List<student> findAll() {
+        List<student> list = new ArrayList<>();
 
         String sql = """
             SELECT
@@ -169,7 +169,7 @@ public class StudentDAO {
              ResultSet r = s.executeQuery(sql)) {
 
             while (r.next()) {
-                list.add(new Student(
+                list.add(new student(
                     r.getInt("student_id"),
                     r.getInt("user_id"),
                     r.getString("nim"),
@@ -188,7 +188,7 @@ public class StudentDAO {
         return list;
     }
 
-    public boolean createWithAutoUser(Student s) {
+    public boolean createWithAutoUser(student s) {
 
         Connection con = null;
 
@@ -294,7 +294,7 @@ public class StudentDAO {
     }
 
     
-//    public Student findByStudentId(int studentId) {
+//    public student findByStudentId(int studentId) {
 //
 //        String sql = """
 //            SELECT
@@ -337,7 +337,7 @@ public class StudentDAO {
 //        return null;
 //    }
 //
-//    public boolean updateBiodata(Student s) {
+//    public boolean updateBiodata(student s) {
 //        String sql = """
 //            UPDATE student
 //            SET full_name = ?,
@@ -492,7 +492,7 @@ public class StudentDAO {
 //    return lastName + "." + nim + "@unud.ac.id";
 //}
 //
-//    public boolean createStudent(Student s) {
+//    public boolean createStudent(student s) {
 //
 //        String insertUserSql = """
 //            INSERT INTO user_account (username, email, password_hash, role, status)
@@ -615,7 +615,7 @@ public class StudentDAO {
 //            ps.setInt(1, studentId);
 //            ResultSet rs = ps.executeQuery();
 //            if (!rs.next()) {
-//                throw new Exception("Student tidak ditemukan");
+//                throw new Exception("student tidak ditemukan");
 //            }
 //            userId = rs.getInt("user_id");
 //        }

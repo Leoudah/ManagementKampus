@@ -4,7 +4,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
 
 import DAO.FakultasDAO;
-import Model.Fakultas;
+import Model.fakultas;
 
 public class AManageFakultas extends javax.swing.JPanel {
 
@@ -27,7 +27,7 @@ public class AManageFakultas extends javax.swing.JPanel {
         };
 
         FakultasDAO dao = new FakultasDAO();
-        for (Fakultas f : dao.getAll()) {
+        for (fakultas f : dao.getAll()) {
             tableModel.addRow(new Object[]{
                 f.getFakultasId(),
                 f.getFakultasName(),
@@ -222,7 +222,7 @@ public class AManageFakultas extends javax.swing.JPanel {
         return;
     }
 
-    Fakultas f = new Fakultas(
+    fakultas f = new fakultas(
         Nama.getText(),
         Kode.getText(),
         Deskripsi.getText()
@@ -237,7 +237,7 @@ public class AManageFakultas extends javax.swing.JPanel {
     private void EditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditActionPerformed
         if (Integer.parseInt(id.getText()) == -1) return;
 
-        Fakultas f = new Fakultas(
+        fakultas f = new fakultas(
             Integer.parseInt(id.getText()),
             Nama.getText(),
             Kode.getText(),

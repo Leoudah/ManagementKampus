@@ -3,7 +3,8 @@ package Model;
 public class lecturer {
     private int lecturerId;
     private int userId;
-    private String prodi; //Program Studi
+    private int programId;
+    private String programName; // hasil JOIN (opsional)
     private int nidn;
     private String fullName;
     private int nip;
@@ -18,7 +19,8 @@ public class lecturer {
     public lecturer(            
             int lecturerId,
             int userId,
-            String prodi,
+            int programId,
+            String programName,
             int nidn,
             String fullName,
             int nip,
@@ -31,7 +33,8 @@ public class lecturer {
             String email) {
         this.lecturerId = lecturerId;
         this.userId = userId;
-        this.prodi = prodi;
+        this.programId = programId;
+        this.programName = programName;
         this.nidn = nidn;
         this.fullName = fullName;
         this.nip = nip;
@@ -57,11 +60,17 @@ public class lecturer {
     public void setUserId(int userId) {
         this.userId = userId;
    }
-    public String getProdi() {
-        return prodi;
+    public int getProgramId() {
+        return programId;
    }
-    public void setProdi(String prodi) {
-        this.prodi = prodi;
+    public void setProgramId(int programId) {
+        this.programId = programId;
+   }
+    public String getProgramName() {
+        return programName;
+   }
+    public void setProrgamName(String programName) {
+        this.programName = programName;
    }
     public int getNidn() {
         return nidn;

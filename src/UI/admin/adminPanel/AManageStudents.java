@@ -12,7 +12,7 @@ import DAO.StudentDAO;
 import DAO.ProdiDAO;
 import DAO.UserDAO;
 
-import Model.Student;
+import Model.student;
 
 public class AManageStudents extends javax.swing.JPanel {
 
@@ -48,9 +48,9 @@ public class AManageStudents extends javax.swing.JPanel {
     private void loadTable() {
         tableModel.setRowCount(0);
 
-        List<Student> list = studentDAO.findAll();
+        List<student> list = studentDAO.findAll();
 
-        for (Student s : list) {
+        for (student s : list) {
             tableModel.addRow(new Object[]{
                 s.getStudentId(),
                 s.getNim(),
@@ -435,8 +435,8 @@ public class AManageStudents extends javax.swing.JPanel {
                 throw new RuntimeException("Program studi tidak valid");
             }
 
-            // 3. Buat Student object
-            Student s = new Student();
+            // 3. Buat student object
+            student s = new student();
             s.setFullName(fullName);
             s.setAddress(address);
             s.setPreviousSchool(school);
@@ -476,7 +476,7 @@ public class AManageStudents extends javax.swing.JPanel {
         gender.setSelectedItem(tableModel.getValueAt(row, 4).toString());
         angkatan.setText(tableModel.getValueAt(row, 5).toString());
 
-        Student s = studentDAO.findByStudentId(
+        student s = studentDAO.findByStudentId(
             Integer.parseInt(idDipilih.getText())
         );
 
