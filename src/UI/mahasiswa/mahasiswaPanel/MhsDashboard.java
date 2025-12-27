@@ -4,6 +4,8 @@
  */
 package UI.mahasiswa.mahasiswaPanel;
 
+
+import DAO.MhsDashboardDAO;
 import Model.student;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -11,9 +13,169 @@ import java.util.List;
 import java.text.SimpleDateFormat;
 
 public class MhsDashboard extends javax.swing.JPanel {
-    public MhsDashboard() { 
+    private int studentId;
+    private MhsDashboardDAO dashboardDAO;
+    private DefaultTableModel tableModel;
+    
+   
+    public MhsDashboard(int studentId) {
+        this.studentId = studentId;
+        this.dashboardDAO = new MhsDashboardDAO();
+        
         initComponents();
+        initializeTableModel();
+        loadDashboardData();
     }
+    
+    
+    public MhsDashboard() {
+        this(1); // Default student_id = 1
+    }
+    
+    private void initializeTableModel() {
+        tableModel = new DefaultTableModel(
+            new Object[][] {},
+            new String[] {"Mata Kuliah", "Semester", "Grade"}
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // tabel read-only
+            }
+        };
+        jTable1.setModel(tableModel);
+    }
+    
+    private void loadDashboardData() {
+       
+        if (!dashboardDAO.isStudentExists(studentId)) {
+            JOptionPane.showMessageDialog(this, 
+                "Data mahasiswa tidak ditemukan di database!", 
+                "Warning", 
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        
+        loadStudentData();
+        
+        
+        loadCourseData();
+    }
+    
+    private void loadStudentData() {
+        student mhs = dashboardDAO.getStudentById(studentId);
+        
+        if (mhs != null) {
+            // Set judul
+            jLabel1.setText("Halo, " + mhs.getFullName());
+            
+            // Isi data ke form
+            nimField.setText(mhs.getNim());
+            namaField.setText(mhs.getFullName());
+            
+            // Format tanggal lahir
+            if (mhs.getBirthDate() != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                birthDateField.setText(sdf.format(mhs.getBirthDate()));
+            } else {
+                birthDateField.setText("");
+            }
+            
+            // Gender
+            String gender = mhs.getGender();
+            if ("M".equals(gender)) {
+                genderField.setText("Laki-laki");
+            } else if ("F".equals(gender)) {
+                genderField.setText("Perempuan");
+            } else {
+                genderField.setText("-");
+            }
+            
+            // Format tanggal masuk
+            if (mhs.getAdmissionDate() != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                admissionDateField.setText(sdf.format(mhs.getAdmissionDate()));
+            } else {
+                admissionDateField.setText("");
+            }
+            
+            // Entry year
+            entryYearField.setText(String.valueOf(mhs.getEntryYear()));
+            
+            // Program studi
+            prodiField.setText(mhs.getProgramName());
+            
+            // Hitung dan tampilkan IPK
+            double gpa = dashboardDAO.calculateGPA(studentId);
+            gpaField.setText(String.format("%.2f", gpa));
+            
+        } else {
+            // Jika mahasiswa tidak ditemukan
+            jLabel1.setText("Halo, Mahasiswa");
+            clearForm();
+            JOptionPane.showMessageDialog(this, 
+                "Gagal memuat data mahasiswa", 
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void loadCourseData() {
+        List<Object[]> courses = dashboardDAO.getCoursesByStudent(studentId);
+        
+        
+        tableModel.setRowCount(0);
+        
+        if (courses.isEmpty()) {
+            System.out.println("Tidak ada mata kuliah untuk mahasiswa ini");
+        } else {
+            
+            for (Object[] course : courses) {
+                // Format semester
+                int semester = (int) course[1];
+                course[1] = semester > 0 ? "Semester " + semester : "-";
+                
+                tableModel.addRow(course);
+            }
+            
+            
+            int totalSKS = dashboardDAO.getTotalCredits(studentId);
+            System.out.println("✓ Data berhasil dimuat:");
+            System.out.println("  - Total mata kuliah: " + courses.size());
+            System.out.println("  - Total SKS: " + totalSKS);
+        }
+    }
+    
+    private void clearForm() {
+        nimField.setText("");
+        namaField.setText("");
+        birthDateField.setText("");
+        genderField.setText("");
+        admissionDateField.setText("");
+        entryYearField.setText("");
+        prodiField.setText("");
+        gpaField.setText("");
+    }
+    
+    
+    public void refreshData() {
+        loadDashboardData();
+    }
+    
+   
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
+        refreshData();
+    }
+    
+    
+    public int getStudentId() {
+        return studentId;
+    }
+
+    
+   
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -222,7 +384,7 @@ public class MhsDashboard extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 495, Short.MAX_VALUE)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
