@@ -21,8 +21,7 @@ public class DoMystudent extends javax.swing.JPanel {
         initComponents();
         setupTableModel(); 
     }
-    
-    // Constructor yang menerima lecturerId
+
     public DoMystudent(int lecturerId) {
         this.lecturerId = lecturerId;
         initComponents();

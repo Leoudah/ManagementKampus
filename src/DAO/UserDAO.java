@@ -77,4 +77,20 @@ public class UserDAO {
 
         return -1;
     }
+
+    public boolean updateStatus(int userId, String status) {
+        String sql = "UPDATE user_account SET status = ? WHERE user_id = ?";
+        try (Connection con = db.connect();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, status);
+            ps.setInt(2, userId);
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

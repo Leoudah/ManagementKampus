@@ -2,17 +2,17 @@ package UI.admin.adminPanel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.event.ListSelectionListener;
 
 import java.util.Date;
 import java.util.List;
-import java.text.SimpleDateFormat;
 
 import DAO.StudentDAO;
 import DAO.ProdiDAO;
 import DAO.UserDAO;
 
 import Model.student;
+
+import Service.StudentAccountService;
 
 public class AManageStudents extends javax.swing.JPanel {
 
@@ -32,8 +32,8 @@ public class AManageStudents extends javax.swing.JPanel {
     private void initTable() {
             tableModel = new DefaultTableModel(
                 new Object[]{
-                    "ID", "NIM", "Nama", "Prodi",
-                    "Gender", "Angkatan", "Status", "Email"
+                    "ID", "NIM", "Nama", "Lahir", "Diterima", "Alamat",
+                    "Asal Sekolah", "Gender", "Angkatan", "Telepon"
                 }, 0
             ) {
                 @Override
@@ -55,11 +55,13 @@ public class AManageStudents extends javax.swing.JPanel {
                 s.getStudentId(),
                 s.getNim(),
                 s.getFullName(),
-                s.getProgramName(),
+                s.getBirthDate(),
+                s.getAdmissionDate(),
+                s.getAddress(),
+                s.getPreviousSchool(),
                 s.getGender(),
                 s.getEntryYear(),
-                s.getStatus(),
-                s.getEmail()
+                s.getPhone()
             });
         }
     }
@@ -85,8 +87,6 @@ public class AManageStudents extends javax.swing.JPanel {
         gender.addItem("M");
         gender.addItem("F");
     }
-    
-    private ProdiDAO programDAO = new ProdiDAO();
 
     private void initProdiCombo() {
         prodi.removeAllItems();
@@ -96,7 +96,9 @@ public class AManageStudents extends javax.swing.JPanel {
         }
     }
 
+    private ProdiDAO programDAO = new ProdiDAO();
     private UserDAO userDAO = new UserDAO();
+    private StudentAccountService accountService = new StudentAccountService();
 
 
     /**
@@ -133,7 +135,7 @@ public class AManageStudents extends javax.swing.JPanel {
         jLabel11 = new javax.swing.JLabel();
         edit = new javax.swing.JButton();
         add = new javax.swing.JButton();
-        delete = new javax.swing.JButton();
+        Deactivate = new javax.swing.JButton();
         idDipilih = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         lahir = new javax.swing.JSpinner();
@@ -141,8 +143,7 @@ public class AManageStudents extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         alamat = new javax.swing.JTextField();
         gender = new javax.swing.JComboBox<>();
-        biodata = new javax.swing.JButton();
-        status = new javax.swing.JButton();
+        Activate = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -200,11 +201,11 @@ public class AManageStudents extends javax.swing.JPanel {
             }
         });
 
-        delete.setBackground(new java.awt.Color(255, 102, 102));
-        delete.setText("Delete");
-        delete.addActionListener(new java.awt.event.ActionListener() {
+        Deactivate.setBackground(new java.awt.Color(255, 102, 102));
+        Deactivate.setText("Deactivate");
+        Deactivate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteActionPerformed(evt);
+                DeactivateActionPerformed(evt);
             }
         });
 
@@ -220,17 +221,11 @@ public class AManageStudents extends javax.swing.JPanel {
 
         gender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        biodata.setText("Biodata");
-        biodata.addActionListener(new java.awt.event.ActionListener() {
+        Activate.setBackground(new java.awt.Color(102, 204, 255));
+        Activate.setText("Activate");
+        Activate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                biodataActionPerformed(evt);
-            }
-        });
-
-        status.setText("Status");
-        status.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                statusActionPerformed(evt);
+                ActivateActionPerformed(evt);
             }
         });
 
@@ -238,12 +233,6 @@ public class AManageStudents extends javax.swing.JPanel {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(biodata)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(status)
-                .addGap(19, 19, 19))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(67, 67, 67)
                 .addComponent(jLabel1)
@@ -255,10 +244,6 @@ public class AManageStudents extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(idDipilih)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(delete))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(prodi, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -278,7 +263,6 @@ public class AManageStudents extends javax.swing.JPanel {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(gender, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2)
                             .addComponent(telepon, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8)
@@ -289,27 +273,35 @@ public class AManageStudents extends javax.swing.JPanel {
                             .addComponent(diterima)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jLabel11)))))
+                                .addComponent(jLabel11))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(idDipilih)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(Activate)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(Deactivate)))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(sekolah)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(add)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(edit))
-                    .addComponent(sekolah))
+                        .addComponent(edit)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(biodata)
-                    .addComponent(status))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(71, 71, 71)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
@@ -352,13 +344,15 @@ public class AManageStudents extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(add)
                     .addComponent(edit))
-                .addGap(37, 37, 37)
+                .addGap(35, 35, 35)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(idDipilih, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(delete)
-                    .addComponent(idDipilih, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38))
+                    .addComponent(Activate)
+                    .addComponent(Deactivate))
+                .addContainerGap())
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
@@ -392,10 +386,10 @@ public class AManageStudents extends javax.swing.JPanel {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(45, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(45, 45, 45)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -493,25 +487,69 @@ public class AManageStudents extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_editActionPerformed
 
-    private void biodataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_biodataActionPerformed
+    private void DeactivateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeactivateActionPerformed
+        try {
+            int studentId = Integer.parseInt(idDipilih.getText().trim());
 
-    }//GEN-LAST:event_biodataActionPerformed
+            int confirm = JOptionPane.showConfirmDialog(
+                    this,
+                    "Yakin ingin menonaktifkan akun mahasiswa ini?",
+                    "Konfirmasi",
+                    JOptionPane.YES_NO_OPTION
+            );
 
-    private void statusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusActionPerformed
+            if (confirm != JOptionPane.YES_OPTION) return;
 
-    }//GEN-LAST:event_statusActionPerformed
+            accountService.deactivateByStudentId(studentId);
 
-    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+            JOptionPane.showMessageDialog(this,
+                    "Akun mahasiswa berhasil dinonaktifkan");
 
-    }//GEN-LAST:event_deleteActionPerformed
+            loadTable(); // refresh JTable
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_DeactivateActionPerformed
+
+    private void ActivateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActivateActionPerformed
+        try {
+            int studentId = Integer.parseInt(idDipilih.getText().trim());
+
+            int confirm = JOptionPane.showConfirmDialog(
+                    this,
+                    "Yakin ingin menaktifkan akun mahasiswa ini?",
+                    "Konfirmasi",
+                    JOptionPane.YES_NO_OPTION
+            );
+
+            if (confirm != JOptionPane.YES_OPTION) return;
+
+            accountService.activateByStudentId(studentId);
+
+            JOptionPane.showMessageDialog(this,
+                    "Akun mahasiswa berhasil dinonaktifkan");
+
+            loadTable(); // refresh JTable
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_ActivateActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Activate;
+    private javax.swing.JButton Deactivate;
     private javax.swing.JButton add;
     private javax.swing.JTextField alamat;
     private javax.swing.JTextField angkatan;
-    private javax.swing.JButton biodata;
-    private javax.swing.JButton delete;
     private javax.swing.JSpinner diterima;
     private javax.swing.JButton edit;
     private javax.swing.JComboBox<String> gender;
@@ -543,7 +581,6 @@ public class AManageStudents extends javax.swing.JPanel {
     private javax.swing.JTextField nama;
     private javax.swing.JComboBox<String> prodi;
     private javax.swing.JTextField sekolah;
-    private javax.swing.JButton status;
     private javax.swing.JTextField telepon;
     // End of variables declaration//GEN-END:variables
 }
