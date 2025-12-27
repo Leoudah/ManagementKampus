@@ -11,26 +11,13 @@ public class lecturer {
     private String gender;
     private String title;
     private String edukasiTertinggi;
-    private String edukasiHistory;
     private String bidangKeahlian;
     private String telepon;
     private String email;
     
-    public lecturer(            
-            int lecturerId,
-            int userId,
-            int programId,
-            String programName,
-            int nidn,
-            String fullName,
-            int nip,
-            String gender,
-            String title,
-            String edukasiTertinggi,
-            String edukasiHistory,
-            String bidangKeahlian,
-            String telepon,
-            String email) {
+public lecturer(int lecturerId, int userId, int programId, String programName, int nidn,
+                String fullName, int nip, String gender, String title, String edukasiTertinggi,
+                String bidangKeahlian, String telepon, String email) {
         this.lecturerId = lecturerId;
         this.userId = userId;
         this.programId = programId;
@@ -41,7 +28,6 @@ public class lecturer {
         this.gender = gender;
         this.title = title;
         this.edukasiTertinggi = edukasiTertinggi;
-        this.edukasiHistory = edukasiHistory;
         this.bidangKeahlian = bidangKeahlian;
         this.telepon = telepon;
         this.email = email;
@@ -107,12 +93,6 @@ public class lecturer {
    }
     public void setEdukasiTertinggi(String edukasiTertinggi) {
         this.edukasiTertinggi = edukasiTertinggi;
-   }
-    public String getEdukasiHistory() {
-        return edukasiHistory;
-   }
-    public void setEdukasiHistory(String edukasiHistory) {
-        this.edukasiHistory = edukasiHistory;
    }
     public String getBidangKeahlian() {
         return bidangKeahlian;

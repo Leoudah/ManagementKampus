@@ -38,7 +38,6 @@ public class DoDashboardDAO {
                         rs.getString("gender"),            // gender (8)
                         rs.getString("position_title"),    // title (9)
                         rs.getString("highest_education"), // edukasiTertinggi (10)
-                        rs.getString("education_history"), // edukasiHistory (11)
                         rs.getString("expertise"),         // bidangKeahlian (12)
                         rs.getString("phone"),             // telepon (13)
                         ""                                 // email (14)
@@ -74,7 +73,6 @@ public class DoDashboardDAO {
                         rs.getString("gender"),
                         rs.getString("position_title"),
                         rs.getString("highest_education"),
-                        rs.getString("education_history"),
                         rs.getString("expertise"),
                         rs.getString("phone"),
                         ""
