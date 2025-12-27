@@ -38,27 +38,27 @@ public class DoFrame extends javax.swing.JFrame {
         initComponents();
         initCard();
     }
-    
-    private void initCard(){
-        cardLayout = new CardLayout();
-        jPanel1.setLayout(cardLayout);
-        
-        coursePanel = new DoCourse();
-        dashboardPanel = new DoDashboard();
-        inputNilaiPanel = new DoInputNilai();
-        myStudentPanel = new DoMystudent();
-        profilePanel = new DoProfile();
-        
-        jPanel1.add(dashboardPanel,        "DASHBOARD");
-        jPanel1.add(coursePanel,        "COURSE");
-        jPanel1.add(inputNilaiPanel,        "INPUT_NILAI");
-        jPanel1.add(myStudentPanel,        "MYSTUDENT");
-        jPanel1.add(profilePanel,        "PROFILE");
-        
-        cardLayout.show(jPanel1, "DASHBOARD");
-        
-    }
+        private void initCard() {
+            cardLayout = new CardLayout();
+            jPanel1.setLayout(cardLayout);
 
+            int lecturerId = UserSession.getLecturerId();
+
+            dashboardPanel = new DoDashboard();
+            profilePanel = new DoProfile();
+            coursePanel = new DoCourse();
+            inputNilaiPanel = new DoInputNilai();
+            myStudentPanel = new DoMystudent(lecturerId);
+
+            jPanel1.add(dashboardPanel, "DASHBOARD");
+            jPanel1.add(profilePanel, "PROFILE");
+            jPanel1.add(coursePanel, "COURSE");
+            jPanel1.add(inputNilaiPanel, "INPUT_NILAI");
+            jPanel1.add(myStudentPanel, "MYSTUDENT");
+
+
+            cardLayout.show(jPanel1, "DASHBOARD");
+        }
     
     /**
      * This method is called from within the constructor to initialize the form.

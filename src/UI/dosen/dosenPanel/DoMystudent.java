@@ -1,22 +1,135 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package UI.dosen.dosenPanel;
 
-/**
- *
- * @author 62895
- */
+import DAO.MyStudentDAO; 
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import Database.koneksiDB;
+
 public class DoMystudent extends javax.swing.JPanel {
 
-    /**
-     * Creates new form DoMystudent
-     */
+    private MyStudentDAO studentDAO = new MyStudentDAO();
+    private int lecturerId;
+    private int currentEnrollmentId = -1;
+    
     public DoMystudent() {
         initComponents();
+        setupTableModel(); 
     }
+    
+    // Constructor yang menerima lecturerId
+    public DoMystudent(int lecturerId) {
+        this.lecturerId = lecturerId;
+        initComponents();
+        setupTableModel();
+        loadDataToTable();
+        addTableSelectionListener();
+    }
+    
+    private void setupTableModel() {
+        String[] columns = {"Nama Mahasiswa", "NIM", "SKS", "Semester", "Mata Kuliah", "Status"};
+        DefaultTableModel model = new DefaultTableModel(columns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // tabel read-only
+            }
+        };
+        jTable4.setModel(model);
+    }
+    
+    private void addTableSelectionListener() {
+        jTable4.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting() && jTable4.getSelectedRow() != -1) {
+                    int selectedRow = jTable4.getSelectedRow();
 
+                    // Ambil data dari tabel
+                    String nama = (String) jTable4.getValueAt(selectedRow, 0);
+                    String nim = (String) jTable4.getValueAt(selectedRow, 1);
+                    String sks = jTable4.getValueAt(selectedRow, 2).toString();
+                    String semester = jTable4.getValueAt(selectedRow, 3).toString();
+                    String course = (String) jTable4.getValueAt(selectedRow, 4);
+                    String status = (String) jTable4.getValueAt(selectedRow, 5);
+
+                    // Isi form
+                    jTextField2.setText(nama);        // Nama Mahasiswa
+                    jTextField1.setText(nim);         // NIM
+                    jTextField5.setText(sks);         // Jumlah SKS
+                    jTextField6.setText(semester);    // Semester
+                    jTextField4.setText(course);      // Mata Kuliah
+                    jComboBox2.setSelectedItem(status); // Status
+
+                    // Kita butuh enrollment_id untuk update. Cara paling mudah: simpan dari data asli
+                    // Tapi karena DAO return Object[], kita perlu query ulang atau simpan tambahan
+                    // Solusi praktis: cari enrollment_id berdasarkan data unik (nim + course + semester)
+                    currentEnrollmentId = getEnrollmentId(nim, course, Integer.parseInt(semester));
+                }
+            }
+        });
+
+    }
+    
+    private int getEnrollmentId(String nim, String courseName, int semesterId) {
+        int enrollmentId = -1;
+        String sql = """
+            SELECT e.enrollment_id 
+            FROM enrollment e
+            JOIN student s ON e.student_id = s.student_id
+            JOIN course c ON e.course_id = c.course_id
+            WHERE s.nim = ? AND c.name = ? AND e.semester_id = ?
+            """;
+
+        try (Connection conn = new koneksiDB().connect();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, nim);
+            ps.setString(2, courseName);
+            ps.setInt(3, semesterId);
+
+            try (java.sql.ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    enrollmentId = rs.getInt("enrollment_id");
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error mencari data enrollment: " + ex.getMessage());
+        }
+        return enrollmentId;
+    }
+    
+    private void loadDataToTable() {
+        List<Object[]> data = studentDAO.getMyStudents(lecturerId);
+
+        // Ambil model yang sudah ada
+        DefaultTableModel model = (DefaultTableModel) jTable4.getModel();
+        
+        // Kosongkan dulu isi tabel
+        model.setRowCount(0);
+
+        // Tambahkan data baris per baris
+        for (Object[] row : data) {
+            model.addRow(row);
+        }
+    }
+    
+    public void refreshTable() {
+        loadDataToTable();
+    }
+    
+    private void clearForm() {
+        jTextField1.setText("");
+        jTextField2.setText("");
+        jTextField4.setText("");
+        jTextField5.setText("");
+        jTextField6.setText("");
+        jComboBox2.setSelectedIndex(0);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -76,13 +189,13 @@ public class DoMystudent extends javax.swing.JPanel {
 
         jTable4.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Nama", "NIM", "Jumlah SKS", "Semester", "Course", "Status"
             }
         ));
         jScrollPane5.setViewportView(jTable4);
@@ -113,7 +226,7 @@ public class DoMystudent extends javax.swing.JPanel {
 
         jLabel8.setText("Jumlah SKS");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ENROLLED", "COMPLETED", "WITHDRAWN" }));
 
         jLabel3.setText("NIM");
 
@@ -206,7 +319,34 @@ public class DoMystudent extends javax.swing.JPanel {
     }//GEN-LAST:event_jTextField5ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        if (currentEnrollmentId == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih salah satu baris di tabel terlebih dahulu!", 
+                                          "Peringatan", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String newStatus = (String) jComboBox2.getSelectedItem();
+
+        String sql = "UPDATE enrollment SET status = ? WHERE enrollment_id = ?";
+
+        try (Connection conn = new koneksiDB().connect();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, newStatus);
+            ps.setInt(2, currentEnrollmentId);
+
+            int updated = ps.executeUpdate();
+            if (updated > 0) {
+                JOptionPane.showMessageDialog(this, "Status berhasil diupdate menjadi: " + newStatus);
+                refreshTable(); // refresh tabel
+                clearForm();    // kosongkan form
+                currentEnrollmentId = -1;
+            } else {
+                JOptionPane.showMessageDialog(this, "Gagal update status.");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed

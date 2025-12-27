@@ -36,6 +36,13 @@ public class UserSession {
         return currentStudent;
     }
     
+    public static int getLecturerId() {
+        if (currentLecturer != null) {
+            return currentLecturer.getLecturerId();
+        }
+        return 0; 
+    }
+    
     //PENGECEKAN LOGIN & ROLE
     public static boolean isLoggedIn() {
         return currentUser != null;
