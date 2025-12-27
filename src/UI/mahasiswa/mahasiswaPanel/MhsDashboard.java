@@ -17,7 +17,7 @@ public class MhsDashboard extends javax.swing.JPanel {
     private MhsDashboardDAO dashboardDAO;
     private DefaultTableModel tableModel;
     
-    // Constructor dengan parameter studentId
+   
     public MhsDashboard(int studentId) {
         this.studentId = studentId;
         this.dashboardDAO = new MhsDashboardDAO();
@@ -27,7 +27,7 @@ public class MhsDashboard extends javax.swing.JPanel {
         loadDashboardData();
     }
     
-    // Constructor default
+    
     public MhsDashboard() {
         this(1); // Default student_id = 1
     }
@@ -46,7 +46,7 @@ public class MhsDashboard extends javax.swing.JPanel {
     }
     
     private void loadDashboardData() {
-        // Cek dulu apakah mahasiswa ada
+       
         if (!dashboardDAO.isStudentExists(studentId)) {
             JOptionPane.showMessageDialog(this, 
                 "Data mahasiswa tidak ditemukan di database!", 
@@ -55,10 +55,10 @@ public class MhsDashboard extends javax.swing.JPanel {
             return;
         }
         
-        // Load data mahasiswa
+        
         loadStudentData();
         
-        // Load mata kuliah
+        
         loadCourseData();
     }
     
@@ -123,13 +123,13 @@ public class MhsDashboard extends javax.swing.JPanel {
     private void loadCourseData() {
         List<Object[]> courses = dashboardDAO.getCoursesByStudent(studentId);
         
-        // Kosongkan tabel
+        
         tableModel.setRowCount(0);
         
         if (courses.isEmpty()) {
             System.out.println("Tidak ada mata kuliah untuk mahasiswa ini");
         } else {
-            // Isi data ke tabel
+            
             for (Object[] course : courses) {
                 // Format semester
                 int semester = (int) course[1];
@@ -138,7 +138,7 @@ public class MhsDashboard extends javax.swing.JPanel {
                 tableModel.addRow(course);
             }
             
-            // Tampilkan statistik di console
+            
             int totalSKS = dashboardDAO.getTotalCredits(studentId);
             System.out.println("✓ Data berhasil dimuat:");
             System.out.println("  - Total mata kuliah: " + courses.size());
@@ -157,24 +157,24 @@ public class MhsDashboard extends javax.swing.JPanel {
         gpaField.setText("");
     }
     
-    // Method untuk refresh data
+    
     public void refreshData() {
         loadDashboardData();
     }
     
-    // Method untuk set studentId baru
+   
     public void setStudentId(int studentId) {
         this.studentId = studentId;
         refreshData();
     }
     
-    // Getters
+    
     public int getStudentId() {
         return studentId;
     }
 
     
-    // ... [KODE initComponents() DAN VARIABLES DECLARATION TETAP SAMA] ...
+   
 
 
     /**
