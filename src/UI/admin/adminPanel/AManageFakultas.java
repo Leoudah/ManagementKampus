@@ -1,15 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package UI.admin.adminPanel;
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
 
 import DAO.FakultasDAO;
-import Model.fakultas;
-import java.lang.reflect.Field;
+import Model.Fakultas;
 
 public class AManageFakultas extends javax.swing.JPanel {
 
@@ -32,7 +27,7 @@ public class AManageFakultas extends javax.swing.JPanel {
         };
 
         FakultasDAO dao = new FakultasDAO();
-        for (fakultas f : dao.getAll()) {
+        for (Fakultas f : dao.getAll()) {
             tableModel.addRow(new Object[]{
                 f.getFakultasId(),
                 f.getFakultasName(),
@@ -227,7 +222,7 @@ public class AManageFakultas extends javax.swing.JPanel {
         return;
     }
 
-    fakultas f = new fakultas(
+    Fakultas f = new Fakultas(
         Nama.getText(),
         Kode.getText(),
         Deskripsi.getText()
@@ -242,7 +237,7 @@ public class AManageFakultas extends javax.swing.JPanel {
     private void EditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditActionPerformed
         if (Integer.parseInt(id.getText()) == -1) return;
 
-        fakultas f = new fakultas(
+        Fakultas f = new Fakultas(
             Integer.parseInt(id.getText()),
             Nama.getText(),
             Kode.getText(),

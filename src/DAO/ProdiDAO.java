@@ -101,4 +101,40 @@ public class ProdiDAO {
 
         return list;
     }
+
+    public List<String> findAllProgramNames() {
+        List<String> list = new ArrayList<>();
+        String sql = "SELECT name FROM study_program ORDER BY name";
+
+        try (Connection con = db.connect();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                list.add(rs.getString("name"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public int findIdByName(String name) {
+        String sql = "SELECT program_id FROM study_program WHERE name = ?";
+        try (Connection con = db.connect();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("program_id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
 }

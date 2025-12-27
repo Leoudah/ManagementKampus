@@ -1,6 +1,6 @@
 package UI.dosen.dosenPanel;
 
-import DAO.DoDashboardDAO;
+import DAO.LectureDAO;
 import Model.lecturer;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -137,19 +137,6 @@ public class DoDashboard extends javax.swing.JPanel {
             System.out.println("  - Total mata kuliah: " + totalCourses);
             System.out.println("  - Total SKS: " + totalSKS);
         }
-    }
-    
-    private void clearForm() {
-        nipField.setText("");
-        namadosenField.setText("");
-        nidnFiled.setText("");
-        genderField.setText("");
-        prodi.setText("");
-        position_titleField.setText("");
-        highest_educationFeild.setText("");
-        expertiseFeild.setText("");
-        phoneFiled.setText("");
-        emailField.setText(""); // GANTI DARI email MENJADI emailField
     }
     
     // Method untuk refresh data

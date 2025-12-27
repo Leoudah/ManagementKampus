@@ -5,7 +5,7 @@
 package DAO;
 
 import Database.koneksiDB;
-import Model.lecturer;
+import Model.Lecturer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,12 +15,13 @@ public class LectureDAO {
 
     private koneksiDB db = new koneksiDB();
 
-    public lecturer readLecture(int user_id) {
+    public Lecturer readLecture(int user_id) {
 
         String sql = """
             SELECT 
                 l.lecturer_id,
                 l.user_id,
+                l.program_id,                          
                 sp.name,
                 l.nidn,
                 l.full_name,
@@ -45,9 +46,10 @@ public class LectureDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return new lecturer(
+                    return new Lecturer(
                             rs.getInt("lecturer_id"),
                             rs.getInt("user_id"),
+                            rs.getInt("program_id"),
                             rs.getString("name"),     // prodi
                             rs.getInt("nidn"),
                             rs.getString("full_name"),

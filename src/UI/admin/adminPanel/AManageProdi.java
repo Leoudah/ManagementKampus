@@ -12,7 +12,7 @@ import java.util.Map;
 import DAO.ProdiDAO;
 import DAO.FakultasDAO;
 import Model.prodi;
-import Model.fakultas;
+import Model.Fakultas;
 /**
  *
  * @author 62895
@@ -53,7 +53,7 @@ public class AManageProdi extends javax.swing.JPanel {
     private void loadFakultasCombo() {
         Fakultas.removeAllItems();
         FakultasDAO dao = new FakultasDAO();
-        for (fakultas f : dao.getAll()) {
+        for (Fakultas f : dao.getAll()) {
             Fakultas.addItem(f.getFakultasId() + " - " + f.getFakultasName());
         }
     }

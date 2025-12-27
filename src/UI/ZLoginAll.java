@@ -8,9 +8,9 @@ import DAO.UserDAO;
 import DAO.LectureDAO;
 import DAO.StudentDAO;
 
-import Model.user;
-import Model.lecturer;
-import Model.student;
+import Model.User;
+import Model.Lecturer;
+import Model.Student;
 import Session.UserSession;
 
 import javax.swing.*;
@@ -164,7 +164,7 @@ public class ZLoginAll extends javax.swing.JFrame {
         String password = new String(passwordField.getPassword());
 
         UserDAO dao = new UserDAO();
-        user user = dao.login(username, password);
+        User user = dao.login(username, password);
         
         if (user == null) {
             JOptionPane.showMessageDialog(this, "Login gagal");
@@ -189,7 +189,7 @@ public class ZLoginAll extends javax.swing.JFrame {
                     break;
                 case "STUDENT":
                     StudentDAO studentDAO = new StudentDAO();
-                    student stud = studentDAO.readStudent(user.getUserId());
+                    Student stud = studentDAO.findByStudentId(user.getUserId());
                     
                     if (stud == null) {
                         JOptionPane.showMessageDialog(this, "Data student tidak ditemukan");
@@ -204,7 +204,7 @@ public class ZLoginAll extends javax.swing.JFrame {
                     break;
                 case "LECTURER":
                     LectureDAO lectureDAO = new LectureDAO();
-                    lecturer lec = lectureDAO.readLecture(user.getUserId());
+                    Lecturer lec = lectureDAO.readLecture(user.getUserId());
                     
                     if (lec == null) {
                         JOptionPane.showMessageDialog(this, "Data dosen tidak ditemukan");
