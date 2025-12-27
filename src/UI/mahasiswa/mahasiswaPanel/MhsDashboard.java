@@ -4,264 +4,173 @@
  */
 package UI.mahasiswa.mahasiswaPanel;
 
-import Database.koneksiDB;
+
+import DAO.MhsDashboardDAO;
+import Model.student;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import java.sql.*;
+import java.util.List;
 import java.text.SimpleDateFormat;
 
-/**
- *
- * @author 62895
- */
 public class MhsDashboard extends javax.swing.JPanel {
-    private int studentId = 1; // Ganti dengan ID mahasiswa yang login
+    private int studentId;
+    private MhsDashboardDAO dashboardDAO;
     private DefaultTableModel tableModel;
-
-    /**
-     * Creates new form MhsDashboard
-     */
-    public MhsDashboard() {
+    
+    // Constructor dengan parameter studentId
+    public MhsDashboard(int studentId) {
+        this.studentId = studentId;
+        this.dashboardDAO = new MhsDashboardDAO();
+        
         initComponents();
         initializeTableModel();
-        loadStudentData();
-        loadCourseData();
+        loadDashboardData();
+    }
+    
+    // Constructor default
+    public MhsDashboard() {
+        this(1); // Default student_id = 1
     }
     
     private void initializeTableModel() {
         tableModel = new DefaultTableModel(
             new Object[][] {},
             new String[] {"Mata Kuliah", "Semester", "Grade"}
-        );
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // tabel read-only
+            }
+        };
         jTable1.setModel(tableModel);
     }
     
-    private void loadStudentData() {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+    private void loadDashboardData() {
+        // Cek dulu apakah mahasiswa ada
+        if (!dashboardDAO.isStudentExists(studentId)) {
+            JOptionPane.showMessageDialog(this, 
+                "Data mahasiswa tidak ditemukan di database!", 
+                "Warning", 
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         
-        try {
-            koneksiDB koneksi = new koneksiDB();
-            conn = koneksi.connect();
+        // Load data mahasiswa
+        loadStudentData();
+        
+        // Load mata kuliah
+        loadCourseData();
+    }
+    
+    private void loadStudentData() {
+        student mhs = dashboardDAO.getStudentById(studentId);
+        
+        if (mhs != null) {
+            // Set judul
+            jLabel1.setText("Halo, " + mhs.getFullName());
             
-            // Query untuk mengambil data mahasiswa
-            String sql = "SELECT * FROM student WHERE student_id = ?";
+            // Isi data ke form
+            nimField.setText(mhs.getNim());
+            namaField.setText(mhs.getFullName());
             
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, studentId);
-            rs = pstmt.executeQuery();
-            
-            if (rs.next()) {
-                // Set judul dengan nama mahasiswa
-                jLabel1.setText("Halo, " + rs.getString("full_name"));
-                
-                // Isi data mahasiswa ke textfield
-                nimField.setText(rs.getString("nim"));
-                namaField.setText(rs.getString("full_name"));
-                
-                // Format tanggal lahir
-                Date birthDate = rs.getDate("birth_date");
-                if (birthDate != null) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                    birthDateField.setText(sdf.format(birthDate));
-                } else {
-                    birthDateField.setText("");
-                }
-                
-                genderField.setText(rs.getString("gender").equals("M") ? "Laki-laki" : "Perempuan");
-                
-                // Format tanggal masuk
-                Date admissionDate = rs.getDate("admission_date");
-                if (admissionDate != null) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                    admissionDateField.setText(sdf.format(admissionDate));
-                } else {
-                    admissionDateField.setText("");
-                }
-                
-                // Entry year
-                entryYearField.setText(String.valueOf(rs.getInt("entry_year")));
-                
-                // Program studi
-                prodiField.setText("Program ID: " + rs.getInt("program_id"));
-                
-                // Hitung IPK
-                calculateGPA();
+            // Format tanggal lahir
+            if (mhs.getBirthDate() != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                birthDateField.setText(sdf.format(mhs.getBirthDate()));
             } else {
-                // Kosongkan semua field jika mahasiswa tidak ditemukan
-                jLabel1.setText("Halo, Mahasiswa");
-                nimField.setText("");
-                namaField.setText("");
                 birthDateField.setText("");
-                genderField.setText("");
-                admissionDateField.setText("");
-                entryYearField.setText("");
-                prodiField.setText("");
-                gpaField.setText("");
             }
             
-        } catch (SQLException e) {
-            System.out.println("Error load student data: " + e.getMessage());
-            e.printStackTrace();
-            // Kosongkan semua field jika error
-            jLabel1.setText("Halo, Mahasiswa");
-            nimField.setText("");
-            namaField.setText("");
-            birthDateField.setText("");
-            genderField.setText("");
-            admissionDateField.setText("");
-            entryYearField.setText("");
-            prodiField.setText("");
-            gpaField.setText("");
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+            // Gender
+            String gender = mhs.getGender();
+            if ("M".equals(gender)) {
+                genderField.setText("Laki-laki");
+            } else if ("F".equals(gender)) {
+                genderField.setText("Perempuan");
+            } else {
+                genderField.setText("-");
             }
+            
+            // Format tanggal masuk
+            if (mhs.getAdmissionDate() != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                admissionDateField.setText(sdf.format(mhs.getAdmissionDate()));
+            } else {
+                admissionDateField.setText("");
+            }
+            
+            // Entry year
+            entryYearField.setText(String.valueOf(mhs.getEntryYear()));
+            
+            // Program studi
+            prodiField.setText(mhs.getProgramId());
+            
+            // Hitung dan tampilkan IPK
+            double gpa = dashboardDAO.calculateGPA(studentId);
+            gpaField.setText(String.format("%.2f", gpa));
+            
+        } else {
+            // Jika mahasiswa tidak ditemukan
+            jLabel1.setText("Halo, Mahasiswa");
+            clearForm();
+            JOptionPane.showMessageDialog(this, 
+                "Gagal memuat data mahasiswa", 
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
         }
     }
     
     private void loadCourseData() {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        List<Object[]> courses = dashboardDAO.getCoursesByStudent(studentId);
         
-        try {
-            koneksiDB koneksi = new koneksiDB();
-            conn = koneksi.connect();
-            
-            // Cek dulu apakah tabel enrollment ada
-            DatabaseMetaData meta = conn.getMetaData();
-            ResultSet tables = meta.getTables(null, null, "enrollment", null);
-            
-            if (!tables.next()) {
-                // Tabel tidak ada, kosongkan tabel saja
-                System.out.println("Table 'enrollment' tidak ditemukan");
-                tableModel.setRowCount(0);
-                return;
-            }
-            
-            // Query untuk mengambil mata kuliah mahasiswa
-            String sql = "SELECT c.name as course_name, " +
-                         "       c.course_code, " +
-                         "       e.grade, " +
-                         "       c.semester_suggestion " +
-                         "FROM enrollment e " +
-                         "LEFT JOIN course c ON e.course_id = c.course_id " +
-                         "WHERE e.student_id = ? " +
-                         "ORDER BY c.name ASC";
-            
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, studentId);
-            rs = pstmt.executeQuery();
-            
-            // Clear table terlebih dahulu
-            tableModel.setRowCount(0);
-            
-            // Isi data ke table
-            while (rs.next()) {
-                String courseName = rs.getString("course_name");
-                String courseCode = rs.getString("course_code");
-                String grade = rs.getString("grade");
-                int semester = rs.getInt("semester_suggestion");
-                
-                // Format: Kode - Mata Kuliah
-                String courseDisplay;
-                if (courseCode != null && !courseCode.isEmpty()) {
-                    courseDisplay = courseCode + " - " + courseName;
-                } else {
-                    courseDisplay = courseName;
-                }
-                
-                // Jika grade null, kosongkan
-                if (grade == null || grade.trim().isEmpty()) {
-                    grade = "";
-                }
-                
+        // Kosongkan tabel
+        tableModel.setRowCount(0);
+        
+        if (courses.isEmpty()) {
+            System.out.println("Tidak ada mata kuliah untuk mahasiswa ini");
+        } else {
+            // Isi data ke tabel
+            for (Object[] course : courses) {
                 // Format semester
-                String semesterDisplay = "Semester " + semester;
+                int semester = (int) course[1];
+                course[1] = semester > 0 ? "Semester " + semester : "-";
                 
-                tableModel.addRow(new Object[]{courseDisplay, semesterDisplay, grade});
+                tableModel.addRow(course);
             }
             
-            // TIDAK ADA DATA DUMMY DI SINI!
-            // Jika tidak ada data, tabel akan kosong
-            
-        } catch (SQLException e) {
-            System.out.println("Error load course data: " + e.getMessage());
-            e.printStackTrace();
-            // TIDAK ADA DATA DUMMY DI SINI!
-            // Jika error, tabel akan kosong
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            // Tampilkan statistik di console
+            int totalSKS = dashboardDAO.getTotalCredits(studentId);
+            System.out.println("✓ Data berhasil dimuat:");
+            System.out.println("  - Total mata kuliah: " + courses.size());
+            System.out.println("  - Total SKS: " + totalSKS);
         }
     }
     
-    private void calculateGPA() {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        
-        try {
-            koneksiDB koneksi = new koneksiDB();
-            conn = koneksi.connect();
-            
-            // Query untuk menghitung IPK
-            String sql = "SELECT " +
-                         "  SUM(CASE grade " +
-                         "    WHEN 'A' THEN 4 * c.credits " +
-                         "    WHEN 'B' THEN 3 * c.credits " +
-                         "    WHEN 'C' THEN 2 * c.credits " +
-                         "    WHEN 'D' THEN 1 * c.credits " +
-                         "    WHEN 'E' THEN 0 * c.credits " +
-                         "    ELSE 0 " +
-                         "  END) as total_nilai, " +
-                         "  SUM(c.credits) as total_sks " +
-                         "FROM enrollment e " +
-                         "LEFT JOIN course c ON e.course_id = c.course_id " +
-                         "WHERE e.student_id = ? AND e.grade IS NOT NULL AND e.grade IN ('A','B','C','D','E')";
-            
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, studentId);
-            rs = pstmt.executeQuery();
-            
-            if (rs.next()) {
-                double totalNilai = rs.getDouble("total_nilai");
-                double totalSKS = rs.getDouble("total_sks");
-                
-                if (totalSKS > 0) {
-                    double ipk = totalNilai / totalSKS;
-                    // Format IPK dengan 2 angka dibelakang koma
-                    gpaField.setText(String.format("%.2f", ipk));
-                } else {
-                    gpaField.setText("0.00");
-                }
-            } else {
-                gpaField.setText("0.00");
-            }
-            
-        } catch (SQLException e) {
-            System.out.println("Error calculate GPA: " + e.getMessage());
-            e.printStackTrace();
-            gpaField.setText("0.00");
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+    private void clearForm() {
+        nimField.setText("");
+        namaField.setText("");
+        birthDateField.setText("");
+        genderField.setText("");
+        admissionDateField.setText("");
+        entryYearField.setText("");
+        prodiField.setText("");
+        gpaField.setText("");
+    }
+    
+    // Method untuk refresh data
+    public void refreshData() {
+        loadDashboardData();
+    }
+    
+    // Method untuk set studentId baru
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
+        refreshData();
+    }
+    
+    // Getters
+    public int getStudentId() {
+        return studentId;
     }
 
     
