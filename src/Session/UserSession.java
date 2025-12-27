@@ -63,9 +63,17 @@ public class UserSession {
                "STUDENT".equalsIgnoreCase(currentUser.getRole().trim());
     }
 
+    public static int getStudentId() {
+        if (currentStudent != null) {
+            return currentStudent.getStudentId();
+        }
+        System.out.println("Warning: Student ID requested but currentStudent is null!");
+        return 0;
+    }
 
     public static void clear() {
         currentUser = null;
         currentLecturer = null;
     }
 }
+

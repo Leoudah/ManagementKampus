@@ -1,34 +1,41 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package UI.mahasiswa.mahasiswaPanel;
 
-import DAO.MhsGradeDAO;
-import Model.student;
+import DAO.StudentGradeDAO;
 import Session.UserSession;
+import Model.student;
+import javax.swing.table.DefaultTableModel;
 import java.util.List;
-import javax.swing.table.DefaultTableModel; 
-/**
- *
- * @author 62895
- */
+
 public class MhsGrade extends javax.swing.JPanel {
 
-    private final MhsGradeDAO gradeDAO = new MhsGradeDAO();
-    private final student student;
+    private StudentGradeDAO gradeDAO = new StudentGradeDAO();
+    private int studentId;
 
     public MhsGrade() {
-        this.student = UserSession.getStudent();
-        if (student == null) {
-            throw new IllegalStateException("Student session is null");
-        }
         initComponents();
-        setupTableModel();
-        loadGrades();
+        initGradePanel();
     }
-      private void setupTableModel() {
-        String[] columns = { "Mata Kuliah", "Semester", "Grade" };
+
+    private void initGradePanel() {
+        student currentStudent = UserSession.getStudent();
+        if (currentStudent == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Session mahasiswa tidak ditemukan!");
+            return;
+        }
+        this.studentId = currentStudent.getStudentId();
+
+        setupTableModel();
+        loadSemesters();
+
+        // Tampilkan semua semester pertama kali (atau semester terbaru)
+        if (Semester.getItemCount() > 0) {
+            Semester.setSelectedIndex(0);
+            loadGradesForSelectedSemester();
+        }
+    }
+
+    private void setupTableModel() {
+        String[] columns = {"Mata Kuliah", "Semester", "Grade"};
         DefaultTableModel model = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -37,11 +44,27 @@ public class MhsGrade extends javax.swing.JPanel {
         };
         jTable1.setModel(model);
     }
-      private void loadGrades() {
-        List<Object[]> data = gradeDAO.getGradesByStudent(student);
+
+    private void loadSemesters() {
+        Semester.removeAllItems();
+        List<Integer> semesters = gradeDAO.getSemestersByStudent(studentId);
+        for (Integer sem : semesters) {
+            Semester.addItem("Semester " + sem);
+        }
+    }
+
+    private void loadGradesForSelectedSemester() {
+        int selectedIndex = Semester.getSelectedIndex();
+        if (selectedIndex == -1) return;
+
+        List<Integer> semesters = gradeDAO.getSemestersByStudent(studentId);
+        int semesterId = semesters.get(selectedIndex);
+
+        List<Object[]> data = gradeDAO.getGradesByStudentAndSemester(studentId, semesterId);
 
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.setRowCount(0);
+        model.setRowCount(0); 
+
         for (Object[] row : data) {
             model.addRow(row);
         }
@@ -125,7 +148,7 @@ public class MhsGrade extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void SemesterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SemesterActionPerformed
-       loadGrades(); 
+       loadGradesForSelectedSemester(); 
     }//GEN-LAST:event_SemesterActionPerformed
 
 
