@@ -4,18 +4,52 @@
  */
 package UI.mahasiswa.mahasiswaPanel;
 
+import DAO.MhsGradeDAO;
+import Model.student;
+import Session.UserSession;
+import java.util.List;
+import javax.swing.table.DefaultTableModel; 
 /**
  *
  * @author 62895
  */
 public class MhsGrade extends javax.swing.JPanel {
 
+    private final MhsGradeDAO gradeDAO = new MhsGradeDAO();
+    private final student student;
+
+    public MhsGrade() {
+        this.student = UserSession.getStudent();
+        if (student == null) {
+            throw new IllegalStateException("Student session is null");
+        }
+        initComponents();
+        setupTableModel();
+        loadGrades();
+    }
+      private void setupTableModel() {
+        String[] columns = { "Mata Kuliah", "Semester", "Grade" };
+        DefaultTableModel model = new DefaultTableModel(columns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        jTable1.setModel(model);
+    }
+      private void loadGrades() {
+        List<Object[]> data = gradeDAO.getGradesByStudent(student);
+
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        for (Object[] row : data) {
+            model.addRow(row);
+        }
+    }
     /**
      * Creates new form MhsGrade
      */
-    public MhsGrade() {
-        initComponents();
-    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -91,7 +125,7 @@ public class MhsGrade extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void SemesterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SemesterActionPerformed
-        // TODO add your handling code here:
+       loadGrades(); 
     }//GEN-LAST:event_SemesterActionPerformed
 
 
