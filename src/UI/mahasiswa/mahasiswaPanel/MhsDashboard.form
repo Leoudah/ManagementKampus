@@ -45,7 +45,7 @@
                                   <Component id="birthDateField" alignment="0" pref="0" max="32767" attributes="0"/>
                                   <Component id="nimField" pref="0" max="32767" attributes="0"/>
                                   <Component id="prodiField" alignment="0" pref="0" max="32767" attributes="0"/>
-                                  <Component id="gpaField" alignment="0" pref="0" max="32767" attributes="0"/>
+                                  <Component id="gpaField" alignment="1" pref="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
