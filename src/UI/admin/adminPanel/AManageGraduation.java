@@ -3,20 +3,76 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package UI.admin.adminPanel;
+import DAO.AManageGraduationDAO;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
+import java.util.List;
 
 /**
  *
  * @author 62895
  */
 public class AManageGraduation extends javax.swing.JPanel {
-
+    private AManageGraduationDAO dao;
+    private DefaultTableModel tableModel;
     /**
      * Creates new form AdManageGraduation
      */
     public AManageGraduation() {
         initComponents();
+        initCustom();
+        loadData();
+        loadComboBoxes();
+    }
+private void initCustom() {
+        dao = new AManageGraduationDAO();
+        
+        // Table VIEW-ONLY
+        tableModel = new DefaultTableModel(new Object[][]{}, 
+            new String[]{"NIM", "Nama", "Program Studi", "IPK"}) {
+            @Override public boolean isCellEditable(int row, int column) { return false; }
+        };
+        jTable4.setModel(tableModel);
+        jTable4.setRowHeight(25);
+        jTable4.setGridColor(java.awt.Color.LIGHT_GRAY);
+        jTable4.setShowGrid(true);
+        
+        // Update labels
+        jLabel2.setText("Nama");
+        jLabel8.setText("IPK");
     }
 
+    private void loadData() {
+        tableModel.setRowCount(0);
+        try {
+            List<Object[]> data = dao.getGraduationData();
+            for (Object[] row : data) {
+                tableModel.addRow(row);
+            }
+        } catch (Exception e) {
+            tableModel.addRow(new Object[]{"Error loading", "", "", ""});
+        }
+    }
+
+    private void loadComboBoxes() {
+        jComboBox1.removeAllItems();
+        jComboBox1.addItem("TI"); jComboBox1.addItem("SI"); jComboBox1.addItem("MI");
+        
+        jComboBox2.removeAllItems();
+        jComboBox2.addItem("2023"); jComboBox2.addItem("2024"); jComboBox2.addItem("2025");
+        
+        jComboBox3.removeAllItems();
+        jComboBox3.addItem("Aktif"); jComboBox3.addItem("Lulus"); jComboBox3.addItem("Cut");
+    }
+
+    private void clearForm() {
+        jTextField1.setText("");
+        jTextField3.setText("");
+        jTextField6.setText("");
+        jComboBox1.setSelectedIndex(0);
+        jComboBox3.setSelectedIndex(0);
+        jLabel5.setText("ID Yang dipilih");
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -279,7 +335,23 @@ public class AManageGraduation extends javax.swing.JPanel {
     }//GEN-LAST:event_jTextField6ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        try {
+            int nim = Integer.parseInt(jTextField1.getText());
+            String nama = jTextField3.getText();
+            int programId = jComboBox1.getSelectedIndex() + 1;
+            double ipk = Double.parseDouble(jTextField6.getText());
+            String status = jComboBox3.getSelectedItem().toString();
+            
+            if (dao.updateStudent(nim, nama, programId, ipk, status)) {
+                JOptionPane.showMessageDialog(this, "✅ Edit berhasil!");
+                clearForm();
+                loadData();
+            } else {
+                JOptionPane.showMessageDialog(this, "❌ NIM tidak ditemukan!");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "❌ Isi NIM dengan benar!");
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -287,7 +359,20 @@ public class AManageGraduation extends javax.swing.JPanel {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+       try {
+            int nim = Integer.parseInt(jTextField3.getText());
+            if (JOptionPane.showConfirmDialog(this, "Hapus NIM " + nim + "?", "Konfirmasi", JOptionPane.YES_NO_OPTION) == 0) {
+                if (dao.deleteStudent(nim)) {
+                    JOptionPane.showMessageDialog(this, "✅ Hapus berhasil!");
+                    clearForm();
+                    loadData();
+                } else {
+                    JOptionPane.showMessageDialog(this, "❌ NIM tidak ditemukan!");
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "❌ Masukkan NIM di field Nama untuk hapus!");
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
@@ -295,11 +380,29 @@ public class AManageGraduation extends javax.swing.JPanel {
     }//GEN-LAST:event_jTextField3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+         try {
+            int nim = Integer.parseInt(jTextField1.getText());
+            String nama = jTextField3.getText();
+            int programId = jComboBox1.getSelectedIndex() + 1;
+            double ipk = Double.parseDouble(jTextField6.getText());
+            String status = jComboBox3.getSelectedItem().toString();
+            
+            if (dao.addStudent(nim, nama, programId, ipk, status)) {
+                JOptionPane.showMessageDialog(this, "✅ Tambah berhasil!");
+                clearForm();
+                loadData();
+            } else {
+                JOptionPane.showMessageDialog(this, "❌ NIM sudah ada!");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "❌ Isi semua field dengan benar!");
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+       int count = dao.generateGraduates();
+        JOptionPane.showMessageDialog(this, "🎓 " + count + " mahasiswa lulus!");
+        loadData();
     }//GEN-LAST:event_jButton4ActionPerformed
 
 
