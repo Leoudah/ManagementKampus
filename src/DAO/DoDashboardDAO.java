@@ -10,7 +10,7 @@ public class DoDashboardDAO {
     
     public lecturer getLecturerById(int lecturerId) {
         lecturer dosen = null;
-        String sql = "SELECT l.*, p.name as program_name " +
+        String sql = "SELECT l.*, sp.name as program_name " +
                      "FROM lecturer l " +
                      "LEFT JOIN study_program sp ON l.program_id = sp.program_id " +
                      "WHERE l.lecturer_id = ?";

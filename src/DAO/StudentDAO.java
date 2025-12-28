@@ -295,7 +295,6 @@ public class StudentDAO {
         return false;
     }
 
-   
     public boolean update(student student) {
         String sql = """
             UPDATE student SET
@@ -349,7 +348,6 @@ public class StudentDAO {
             return false;
         }
     }
-    
    
     public boolean updateContactInfo(int studentId, String phone, String email, String address) {
         Connection con = null;

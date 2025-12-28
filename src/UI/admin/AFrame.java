@@ -10,6 +10,7 @@ import UI.admin.adminPanel.AManageLecturer;
 import UI.admin.adminPanel.AManageProdi;
 import UI.admin.adminPanel.AManageFakultas;
 import UI.admin.adminPanel.AManageStudents;
+import UI.admin.adminPanel.AManageSemester;
 
 import java.awt.CardLayout;
 import javax.swing.JOptionPane;
@@ -27,6 +28,7 @@ public class AFrame extends javax.swing.JFrame {
     private AManageProdi manageProdiPanel;
     private AManageFakultas manageFakultasPanel;
     private AManageStudents manageStudentsPanel;
+    private AManageSemester manageSemesterPanel;
 
 
     public AFrame() {
@@ -56,6 +58,7 @@ public class AFrame extends javax.swing.JFrame {
         manageProdiPanel      = new AManageProdi();
         manageFakultasPanel   = new AManageFakultas();
         manageStudentsPanel   = new AManageStudents();
+        manageSemesterPanel   = new AManageSemester();
 
         jPanel1.add(dashboardPanel,        "DASHBOARD");
         jPanel1.add(manageCoursePanel,     "COURSE");
@@ -65,6 +68,7 @@ public class AFrame extends javax.swing.JFrame {
         jPanel1.add(manageProdiPanel,      "PRODI");
         jPanel1.add(manageFakultasPanel,   "FAKULTAS");
         jPanel1.add(manageStudentsPanel,   "STUDENTS");
+        jPanel1.add(manageSemesterPanel,   "SEMESTER");
 
         cardLayout.show(jPanel1, "DASHBOARD");
     }
@@ -87,6 +91,7 @@ public class AFrame extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         Fakultas = new javax.swing.JMenuItem();
         Prodi = new javax.swing.JMenuItem();
+        semester = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         Enrollment = new javax.swing.JMenuItem();
         Course = new javax.swing.JMenuItem();
@@ -149,6 +154,19 @@ public class AFrame extends javax.swing.JFrame {
             }
         });
         jMenu2.add(Prodi);
+
+        semester.setText("Semester");
+        semester.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                semesterMouseClicked(evt);
+            }
+        });
+        semester.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                semesterActionPerformed(evt);
+            }
+        });
+        jMenu2.add(semester);
 
         jMenuBar1.add(jMenu2);
 
@@ -229,7 +247,7 @@ public class AFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 829, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -307,6 +325,14 @@ public class AFrame extends javax.swing.JFrame {
         cardLayout.show(jPanel1, "COURSE");
     }//GEN-LAST:event_CourseActionPerformed
 
+    private void semesterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_semesterMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_semesterMouseClicked
+
+    private void semesterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_semesterActionPerformed
+        cardLayout.show(jPanel1, "SEMESTER");
+    }//GEN-LAST:event_semesterActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -359,5 +385,6 @@ public class AFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenuItem semester;
     // End of variables declaration//GEN-END:variables
 }

@@ -18,9 +18,9 @@ public class DoCourseDAO {
         List<Course> courses = new ArrayList<>();
         
         String sql = """
-            SELECT courseId, programId, lecturerId, courseCode, name, credits, semesterSuggestion 
+            SELECT course_id, program_id, lecturer_id, course_code, name, credits, semester_suggestion 
             FROM Course 
-            ORDER BY semesterSuggestion, name
+            ORDER BY semester_suggestion, name
         """;
 
         try (Connection con = db.connect();
@@ -29,13 +29,13 @@ public class DoCourseDAO {
             
             while (rs.next()) {
                 Course course = new Course(
-                    rs.getInt("courseId"),
-                    rs.getInt("programId"),
-                    rs.getObject("lecturerId", Integer.class),
-                    rs.getString("courseCode"),
+                    rs.getInt("course_id"),
+                    rs.getInt("program_id"),
+                    rs.getObject("lecturer_id", Integer.class),
+                    rs.getString("course_code"),
                     rs.getString("name"),
                     rs.getInt("credits"),
-                    rs.getInt("semesterSuggestion")
+                    rs.getInt("semester_suggestion")
                 );
                 courses.add(course);
             }

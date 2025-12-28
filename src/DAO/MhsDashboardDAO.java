@@ -10,7 +10,7 @@ public class MhsDashboardDAO {
     
     public student getStudentById(int studentId) {
         student mhs = null;
-        String sql = "SELECT s.*, p.name as program_name " +
+        String sql = "SELECT s.*, sp.name as program_name " +
                      "FROM student s " +
                      "LEFT JOIN study_program sp ON s.program_id = sp.program_id " +
                      "WHERE s.student_id = ?";

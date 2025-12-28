@@ -13,6 +13,9 @@ public class Course {
     private int credits;
     private int semesterSuggestion;
 
+    public Course(){
+    }
+    
     // Konstruktor lengkap
     public Course(int courseId,
                   int programId,

@@ -57,8 +57,6 @@ public class MhsDashboard extends javax.swing.JPanel {
         
         
         loadStudentData();
-        
-        
         loadCourseData();
     }
     

@@ -45,9 +45,11 @@ public class MhsFrame extends javax.swing.JFrame {
         cardLayout = new CardLayout();
         jPanel1.setLayout(cardLayout);
         
+        int lecturerId = UserSession.getStudentId();
+        
         coursePanel = new MhsCourse();
         dashboardPanel = new MhsDashboard();
-        enrollmentPanel = new MhsEnroll();
+        enrollmentPanel = new MhsEnroll(lecturerId);
         gradePanel = new MhsGrade();
         profilePanel = new MhsProfile();
         

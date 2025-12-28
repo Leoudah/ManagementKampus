@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CourseDAO {
+    
+    private koneksiDB db = new koneksiDB();
 
     // CREATE
     public void insert(Course c) throws SQLException {
@@ -130,4 +132,58 @@ public class CourseDAO {
             ps.executeUpdate();
         }
     }
+
+        public List<Course> findAvailableByStudent(int studentId) {
+
+        List<Course> courses = new ArrayList<>();
+
+        String sql = """
+            SELECT 
+                c.course_id,
+                c.program_id,
+                c.lecturer_id,
+                c.course_code,
+                c.name,
+                c.credits,
+                c.semester_suggestion
+            FROM course c
+            JOIN student s ON s.program_id = c.program_id
+            WHERE s.student_id = ?
+              AND c.course_id NOT IN (
+                    SELECT e.course_id
+                    FROM enrollment e
+                    WHERE e.student_id = ?
+              )
+            ORDER BY c.semester_suggestion, c.course_code
+        """;
+
+        try (
+            Connection conn = db.connect();
+            PreparedStatement ps = conn.prepareStatement(sql)
+        ) {
+            ps.setInt(1, studentId);
+            ps.setInt(2, studentId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Course c = new Course();
+                c.setCourseId(rs.getInt("course_id"));
+                c.setProgramId(rs.getInt("program_id"));
+                c.setLecturerId(rs.getInt("lecturer_id"));
+                c.setCourseCode(rs.getString("course_code"));
+                c.setName(rs.getString("name"));
+                c.setCredits(rs.getInt("credits"));
+                c.setSemesterSuggestion(rs.getInt("semester_suggestion"));
+
+                courses.add(c);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return courses;
+    }
 }
+
