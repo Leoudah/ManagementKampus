@@ -166,11 +166,11 @@ public class LectureDAO {
         return list;
     }
 
-    public boolean createWithAutoUser(lecturer l) {
+public boolean createWithAutoUser(lecturer l) {
 
     String insertUserSql = """
-        INSERT INTO user_account (email, password, role, status)
-        VALUES (?, ?, ?, ?)
+        INSERT INTO user_account (username, password_hash, email, role, status)
+        VALUES (?, ?, ?, ?, ?)
     """;
 
     String insertLecturerSql = """
@@ -192,27 +192,38 @@ public class LectureDAO {
 
     try {
         con = db.connect();
-        con.setAutoCommit(false); // TRANSAKSI DIMULAI
+        con.setAutoCommit(false);
+
+        int userId;
 
         /* =========================
            1. INSERT USER ACCOUNT
         ========================= */
-        int userId;
-
         try (PreparedStatement psUser =
                      con.prepareStatement(insertUserSql, Statement.RETURN_GENERATED_KEYS)) {
 
-            // Password default (WAJIB kamu tahu ini)
+            String fullName = l.getFullName().trim();
+            String lastName = fullName
+                    .toLowerCase()
+                    .replaceAll("\\s+", " ")
+                    .split(" ")[fullName.split(" ").length - 1];
+
+            String nipStr = String.valueOf(l.getNip());
+
+            String username = lastName + "." + nipStr;
+            String email = username + "@unud.ac.id";
+
             String defaultPassword = "lecturer123";
             String hashedPassword = PasswordUtil.hashPassword(defaultPassword);
 
-            psUser.setString(1, l.getEmail());
+            psUser.setString(1, username);
             psUser.setString(2, hashedPassword);
-            psUser.setString(3, "LECTURER");
-            psUser.setString(4, "ACTIVE");
+            psUser.setString(3, email);
+            psUser.setString(4, "LECTURER");
+            psUser.setString(5, "ACTIVE");
 
             if (psUser.executeUpdate() == 0) {
-                throw new SQLException("Gagal membuat user_account");
+                throw new SQLException("Gagal insert user_account");
             }
 
             try (ResultSet rs = psUser.getGeneratedKeys()) {
@@ -241,19 +252,18 @@ public class LectureDAO {
             psLecturer.setString(10, l.getTelepon());
 
             if (psLecturer.executeUpdate() == 0) {
-                throw new SQLException("Gagal membuat data lecturer");
+                throw new SQLException("Gagal insert lecturer");
             }
         }
 
-        con.commit(); // SEMUA BERHASIL
+        con.commit();
         return true;
 
     } catch (Exception e) {
         try {
             if (con != null) con.rollback();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+        } catch (SQLException ignored) {}
+
         throw new RuntimeException("Gagal membuat lecturer + user: " + e.getMessage(), e);
 
     } finally {
@@ -262,10 +272,24 @@ public class LectureDAO {
                 con.setAutoCommit(true);
                 con.close();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException ignored) {}
     }
 }
 
+    public int findUserIdByLectureId(int lectureId) {
+        String sql = "SELECT user_id FROM lecturer WHERE lecturer_id = ?";
+        try (Connection con = db.connect();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, lectureId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("user_id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }

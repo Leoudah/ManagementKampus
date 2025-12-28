@@ -12,7 +12,7 @@ import DAO.UserDAO;
 
 import Model.lecturer;
 
-import Service.LecturerRegistrationService;
+import Service.LecturerAccountService;
 
 public class AManageLecturer extends javax.swing.JPanel {
 
@@ -20,7 +20,7 @@ public class AManageLecturer extends javax.swing.JPanel {
     private DefaultTableModel tableModel;
     private ProdiDAO programDAO = new ProdiDAO();
     private UserDAO userDAO = new UserDAO();
-    private LecturerRegistrationService accountService = new LecturerRegistrationService();
+    private LecturerAccountService accountService = new LecturerAccountService();
     
     public AManageLecturer() {
         initComponents();
@@ -71,7 +71,7 @@ public class AManageLecturer extends javax.swing.JPanel {
     private void clearForm() {
         nip.setText("");
         telepon.setText("");
-        jTextField3.setText("");
+        idDipilih.setText("");
         nidn.setText("");
         jabatan.setText("");
         pendidikanTerakhir.setText("");
@@ -105,17 +105,14 @@ public class AManageLecturer extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         add = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
         jabatan = new javax.swing.JTextField();
         telepon = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jTable4 = new javax.swing.JTable();
-        jButton3 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         nidn = new javax.swing.JTextField();
         gender = new javax.swing.JComboBox<>();
@@ -127,6 +124,10 @@ public class AManageLecturer extends javax.swing.JPanel {
         nama = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         prodi = new javax.swing.JComboBox<>();
+        Deactivate = new javax.swing.JButton();
+        idDipilih = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        Activate = new javax.swing.JButton();
 
         nip.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -155,8 +156,6 @@ public class AManageLecturer extends javax.swing.JPanel {
             }
         });
 
-        jLabel5.setText("ID Yang dipilih");
-
         jabatan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jabatanActionPerformed(evt);
@@ -166,12 +165,6 @@ public class AManageLecturer extends javax.swing.JPanel {
         telepon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 teleponActionPerformed(evt);
-            }
-        });
-
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
             }
         });
 
@@ -194,6 +187,11 @@ public class AManageLecturer extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable4MouseClicked(evt);
+            }
+        });
         jScrollPane5.setViewportView(jTable4);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -202,7 +200,7 @@ public class AManageLecturer extends javax.swing.JPanel {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE))
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 534, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,14 +209,6 @@ public class AManageLecturer extends javax.swing.JPanel {
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 557, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14))
         );
-
-        jButton3.setBackground(new java.awt.Color(255, 102, 102));
-        jButton3.setText("Delete");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
 
         jLabel4.setText("NIDN");
 
@@ -257,6 +247,24 @@ public class AManageLecturer extends javax.swing.JPanel {
         jLabel12.setText("Program Studi");
 
         prodi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        Deactivate.setBackground(new java.awt.Color(255, 102, 102));
+        Deactivate.setText("Deactivate");
+        Deactivate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeactivateActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("ID Yang dipilih");
+
+        Activate.setBackground(new java.awt.Color(102, 204, 255));
+        Activate.setText("Activate");
+        Activate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ActivateActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -300,15 +308,19 @@ public class AManageLecturer extends javax.swing.JPanel {
                                         .addGroup(layout.createSequentialGroup()
                                             .addComponent(prodi, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGap(0, 0, Short.MAX_VALUE))))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton3))
-                                .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(93, 93, 93)
-                        .addComponent(jLabel1)))
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(idDipilih, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(Activate)
+                                .addGap(18, 18, 18)
+                                .addComponent(Deactivate)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -359,13 +371,15 @@ public class AManageLecturer extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(add))
-                .addGap(96, 96, 96)
+                .addGap(47, 47, 47)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(idDipilih, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3))
-                .addGap(18, 18, 18))
+                    .addComponent(Activate)
+                    .addComponent(Deactivate))
+                .addGap(39, 39, 39))
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -458,14 +472,6 @@ public class AManageLecturer extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_teleponActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void nidnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nidnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_nidnActionPerformed
@@ -482,13 +488,97 @@ public class AManageLecturer extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_namaActionPerformed
 
+    private void DeactivateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeactivateActionPerformed
+        try {
+            int studentId = Integer.parseInt(idDipilih.getText().trim());
+
+            int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "Yakin ingin menonaktifkan akun mahasiswa ini?",
+                "Konfirmasi",
+                JOptionPane.YES_NO_OPTION
+            );
+
+            if (confirm != JOptionPane.YES_OPTION) return;
+
+            accountService.deactivateByStudentId(studentId);
+
+            JOptionPane.showMessageDialog(this,
+                "Akun mahasiswa berhasil dinonaktifkan");
+
+            loadTable(); // refresh JTable
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_DeactivateActionPerformed
+
+    private void ActivateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActivateActionPerformed
+        try {
+            int studentId = Integer.parseInt(idDipilih.getText().trim());
+
+            int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "Yakin ingin menaktifkan akun mahasiswa ini?",
+                "Konfirmasi",
+                JOptionPane.YES_NO_OPTION
+            );
+
+            if (confirm != JOptionPane.YES_OPTION) return;
+
+            accountService.activateByStudentId(studentId);
+
+            JOptionPane.showMessageDialog(this,
+                "Akun mahasiswa berhasil dinonaktifkan");
+
+            loadTable(); // refresh JTable
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_ActivateActionPerformed
+
+    private void jTable4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable4MouseClicked
+        int row = jTable4.getSelectedRow();
+        if (row == -1) return;
+
+        // ID (hidden logic, bukan untuk diedit)
+        idDipilih.setText(tableModel.getValueAt(row, 0).toString());
+
+        // Data utama
+        nidn.setText(tableModel.getValueAt(row, 1).toString());
+        nama.setText(tableModel.getValueAt(row, 2).toString());
+        nip.setText(tableModel.getValueAt(row, 3).toString());
+        gender.setSelectedItem(tableModel.getValueAt(row, 4).toString());
+
+        // Jabatan & pendidikan
+        jabatan.setText(tableModel.getValueAt(row, 5).toString());
+        pendidikanTerakhir.setText(tableModel.getValueAt(row, 6).toString());
+
+        // Bidang & kontak
+        bidangKeahlian.setText(tableModel.getValueAt(row, 7).toString());
+        telepon.setText(tableModel.getValueAt(row, 8).toString());
+
+        // Program studi
+        prodi.setSelectedItem(tableModel.getValueAt(row, 9).toString());
+
+    }//GEN-LAST:event_jTable4MouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Activate;
+    private javax.swing.JButton Deactivate;
     private javax.swing.JButton add;
     private javax.swing.JTextField bidangKeahlian;
     private javax.swing.JComboBox<String> gender;
+    private javax.swing.JTextField idDipilih;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
@@ -503,7 +593,6 @@ public class AManageLecturer extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTable jTable4;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jabatan;
     private javax.swing.JTextField nama;
     private javax.swing.JTextField nidn;
