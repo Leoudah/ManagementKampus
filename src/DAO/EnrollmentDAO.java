@@ -98,7 +98,6 @@ public class EnrollmentDAO {
             JOIN course c ON e.course_id = c.course_id
             WHERE e.student_id = ?
               AND e.semester_id = ?
-              AND e.status = 'PENDING'
             ORDER BY c.name
         """;
 

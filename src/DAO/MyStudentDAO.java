@@ -18,12 +18,15 @@ public class MyStudentDAO {
                 c.credits     AS sks,
                 e.semester_id AS semester,
                 c.name        AS course_name,
-                e.status      AS status
+                e.status      AS status,
+                e.grade       AS grade
             FROM course c
             JOIN enrollment e ON c.course_id = e.course_id
             JOIN student s ON e.student_id = s.student_id
+            JOIN semester sem ON e.semester_id = sem.semester_id
             WHERE c.lecturer_id = ?
-            ORDER BY s.full_name, c.name
+              AND sem.status = 'ACTIVE'
+            ORDER BY s.full_name, c.name;
         """;
 
         try (Connection c = db.connect();
@@ -39,7 +42,8 @@ public class MyStudentDAO {
                         r.getInt("sks"),
                         r.getInt("semester"),
                         r.getString("course_name"),
-                        r.getString("status")
+                        r.getString("status"),
+                        r.getString("grade")
                     };
                     list.add(row);
                 }

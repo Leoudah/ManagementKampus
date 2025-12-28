@@ -7,7 +7,6 @@ package UI.dosen;
 import UI.ZLoginAll;
 import UI.dosen.dosenPanel.DoDashboard;
 import UI.dosen.dosenPanel.DoCourse;
-import UI.dosen.dosenPanel.DoInputNilai;
 import UI.dosen.dosenPanel.DoMystudent;
 import UI.dosen.dosenPanel.DoProfile;
 
@@ -20,7 +19,6 @@ public class DoFrame extends javax.swing.JFrame {
     
     private DoCourse coursePanel;
     private DoDashboard dashboardPanel;
-    private DoInputNilai inputNilaiPanel;
     private DoMystudent myStudentPanel;
     private DoProfile profilePanel;
    
@@ -47,13 +45,11 @@ public class DoFrame extends javax.swing.JFrame {
             dashboardPanel = new DoDashboard();
             profilePanel = new DoProfile();
             coursePanel = new DoCourse();
-            inputNilaiPanel = new DoInputNilai();
             myStudentPanel = new DoMystudent(lecturerId);
 
             jPanel1.add(dashboardPanel, "DASHBOARD");
             jPanel1.add(profilePanel, "PROFILE");
             jPanel1.add(coursePanel, "COURSE");
-            jPanel1.add(inputNilaiPanel, "INPUT_NILAI");
             jPanel1.add(myStudentPanel, "MYSTUDENT");
 
 
@@ -74,7 +70,6 @@ public class DoFrame extends javax.swing.JFrame {
         jMenu5 = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
         jMenu6 = new javax.swing.JMenu();
 
@@ -116,14 +111,6 @@ public class DoFrame extends javax.swing.JFrame {
             }
         });
         jMenuBar1.add(jMenu2);
-
-        jMenu3.setText("Input Nilai");
-        jMenu3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu3MouseClicked(evt);
-            }
-        });
-        jMenuBar1.add(jMenu3);
 
         jMenu4.setText("My Student");
         jMenu4.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -179,10 +166,6 @@ public class DoFrame extends javax.swing.JFrame {
         cardLayout.show(jPanel1, "COURSE");        // TODO add your handling code here:
     }//GEN-LAST:event_jMenu2MouseClicked
 
-    private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
-        cardLayout.show(jPanel1, "INPUT_NILAI");        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenu3MouseClicked
-
     private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
         cardLayout.show(jPanel1, "MYSTUDENT");        // TODO add your handling code here:
     }//GEN-LAST:event_jMenu4MouseClicked
@@ -229,7 +212,6 @@ public class DoFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
