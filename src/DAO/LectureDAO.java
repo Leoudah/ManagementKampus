@@ -2,6 +2,7 @@ package DAO;
 
 import Database.koneksiDB;
 import Model.lecturer;
+import Utils.PasswordUtil;
 
 import java.sql.*;
 import java.sql.Connection;
@@ -164,5 +165,107 @@ public class LectureDAO {
 
         return list;
     }
+
+    public boolean createWithAutoUser(lecturer l) {
+
+    String insertUserSql = """
+        INSERT INTO user_account (email, password, role, status)
+        VALUES (?, ?, ?, ?)
+    """;
+
+    String insertLecturerSql = """
+        INSERT INTO lecturer (
+            user_id,
+            program_id,
+            nidn,
+            full_name,
+            nip,
+            gender,
+            position_title,
+            highest_education,
+            expertise,
+            phone
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """;
+
+    Connection con = null;
+
+    try {
+        con = db.connect();
+        con.setAutoCommit(false); // TRANSAKSI DIMULAI
+
+        /* =========================
+           1. INSERT USER ACCOUNT
+        ========================= */
+        int userId;
+
+        try (PreparedStatement psUser =
+                     con.prepareStatement(insertUserSql, Statement.RETURN_GENERATED_KEYS)) {
+
+            // Password default (WAJIB kamu tahu ini)
+            String defaultPassword = "lecturer123";
+            String hashedPassword = PasswordUtil.hashPassword(defaultPassword);
+
+            psUser.setString(1, l.getEmail());
+            psUser.setString(2, hashedPassword);
+            psUser.setString(3, "LECTURER");
+            psUser.setString(4, "ACTIVE");
+
+            if (psUser.executeUpdate() == 0) {
+                throw new SQLException("Gagal membuat user_account");
+            }
+
+            try (ResultSet rs = psUser.getGeneratedKeys()) {
+                if (!rs.next()) {
+                    throw new SQLException("Gagal mengambil user_id");
+                }
+                userId = rs.getInt(1);
+            }
+        }
+
+        /* =========================
+           2. INSERT LECTURER
+        ========================= */
+        try (PreparedStatement psLecturer =
+                     con.prepareStatement(insertLecturerSql)) {
+
+            psLecturer.setInt(1, userId);
+            psLecturer.setInt(2, l.getProgramId());
+            psLecturer.setInt(3, l.getNidn());
+            psLecturer.setString(4, l.getFullName());
+            psLecturer.setInt(5, l.getNip());
+            psLecturer.setString(6, l.getGender());
+            psLecturer.setString(7, l.getTitle());
+            psLecturer.setString(8, l.getEdukasiTertinggi());
+            psLecturer.setString(9, l.getBidangKeahlian());
+            psLecturer.setString(10, l.getTelepon());
+
+            if (psLecturer.executeUpdate() == 0) {
+                throw new SQLException("Gagal membuat data lecturer");
+            }
+        }
+
+        con.commit(); // SEMUA BERHASIL
+        return true;
+
+    } catch (Exception e) {
+        try {
+            if (con != null) con.rollback();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        throw new RuntimeException("Gagal membuat lecturer + user: " + e.getMessage(), e);
+
+    } finally {
+        try {
+            if (con != null) {
+                con.setAutoCommit(true);
+                con.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
 
 }

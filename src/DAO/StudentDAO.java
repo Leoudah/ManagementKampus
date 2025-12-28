@@ -47,10 +47,10 @@ public class StudentDAO {
                         rs.getInt("student_id"),
                         rs.getInt("user_id"),
                         rs.getInt("program_id"),
-                        rs.getString("program_name"), // Alias dari sp.name
+                        rs.getString("program_name"), 
                         rs.getString("nim"),
                         rs.getString("full_name"),
-                        rs.getDate("birth_date"),     // java.sql.Date otomatis masuk ke java.util.Date
+                        rs.getDate("birth_date"),     
                         rs.getDate("admission_date"),
                         rs.getString("previous_school"),
                         rs.getString("status"),
@@ -58,8 +58,8 @@ public class StudentDAO {
                         rs.getString("gender"),
                         rs.getInt("entry_year"),
                         rs.getString("phone"),
-                        rs.getString("email"),        // Alias dari u.email
-                        null                          // statusAccount (bisa diisi null atau rs.getString jika ada di SQL)
+                        rs.getString("email"),        
+                        null                          
                     );
                 }
             }
@@ -68,8 +68,9 @@ public class StudentDAO {
             e.printStackTrace();
         }
 
-        return null; // Username/password salah atau user tidak aktif
+        return null; 
     }
+    
 
     public int countByProgramId(int programId) {
 
@@ -179,10 +180,10 @@ public class StudentDAO {
                         rs.getInt("student_id"),
                         rs.getInt("user_id"),
                         rs.getInt("program_id"),
-                        rs.getString("program_name"), // Alias dari sp.name
+                        rs.getString("program_name"), 
                         rs.getString("nim"),
                         rs.getString("full_name"),
-                        rs.getDate("birth_date"),     // java.sql.Date otomatis masuk ke java.util.Date
+                        rs.getDate("birth_date"),     
                         rs.getDate("admission_date"),
                         rs.getString("previous_school"),
                         rs.getString("status"),
@@ -190,8 +191,8 @@ public class StudentDAO {
                         rs.getString("gender"),
                         rs.getInt("entry_year"),
                         rs.getString("phone"),
-                        rs.getString("email"),        // Alias dari u.email
-                        null                          // statusAccount (bisa diisi null atau rs.getString jika ada di SQL)
+                        rs.getString("email"),       
+                        null                          
                 ));
             }
 
@@ -294,6 +295,126 @@ public class StudentDAO {
         return false;
     }
 
+   
+    public boolean update(student student) {
+        String sql = """
+            UPDATE student SET
+                program_id = ?,
+                nim = ?,
+                full_name = ?,
+                birth_date = ?,
+                admission_date = ?,
+                previous_school = ?,
+                status = ?,
+                address = ?,
+                gender = ?,
+                entry_year = ?,
+                phone = ?
+            WHERE student_id = ?
+        """;
+
+        try (Connection con = db.connect();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, student.getProgramId());
+            ps.setString(2, student.getNim());
+            ps.setString(3, student.getFullName());
+            
+            
+            if (student.getBirthDate() != null) {
+                ps.setDate(4, new java.sql.Date(student.getBirthDate().getTime()));
+            } else {
+                ps.setNull(4, java.sql.Types.DATE);
+            }
+            
+            if (student.getAdmissionDate() != null) {
+                ps.setDate(5, new java.sql.Date(student.getAdmissionDate().getTime()));
+            } else {
+                ps.setNull(5, java.sql.Types.DATE);
+            }
+            
+            ps.setString(6, student.getPreviousSchool());
+            ps.setString(7, student.getStatus());
+            ps.setString(8, student.getAddress());
+            ps.setString(9, student.getGender());
+            ps.setInt(10, student.getEntryYear());
+            ps.setString(11, student.getPhone());
+            ps.setInt(12, student.getStudentId());
+
+            int rowsUpdated = ps.executeUpdate();
+            return rowsUpdated > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+   
+    public boolean updateContactInfo(int studentId, String phone, String email, String address) {
+        Connection con = null;
+        
+        try {
+            con = db.connect();
+            con.setAutoCommit(false); // Mulai transaksi
+            
+            // 1. Update phone dan address di tabel student
+            String updateStudentSql = """
+                UPDATE student 
+                SET phone = ?, address = ?
+                WHERE student_id = ?
+            """;
+            
+            try (PreparedStatement ps1 = con.prepareStatement(updateStudentSql)) {
+                ps1.setString(1, phone);
+                ps1.setString(2, address);
+                ps1.setInt(3, studentId);
+                ps1.executeUpdate();
+            }
+            
+           
+            int userId = findUserIdByStudentId(studentId);
+            
+            if (userId == -1) {
+                con.rollback();
+                return false;
+            }
+            
+            String updateUserSql = """
+                UPDATE user_account
+                SET email = ?
+                WHERE user_id = ?
+            """;
+            
+            try (PreparedStatement ps2 = con.prepareStatement(updateUserSql)) {
+                ps2.setString(1, email);
+                ps2.setInt(2, userId);
+                ps2.executeUpdate();
+            }
+            
+            con.commit(); // Commit transaksi
+            return true;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                if (con != null) con.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            return false;
+        } finally {
+            try {
+                if (con != null) {
+                    con.setAutoCommit(true);
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private String generateNim(int entryYear, int programId, int sequence) {
         return String.format(
             "%02d%02d%03d",
@@ -307,7 +428,7 @@ public class StudentDAO {
         return Integer.toHexString(password.hashCode()); // minimal
     }
 
-   public int findUserIdByStudentId(int studentId) {
+    public int findUserIdByStudentId(int studentId) {
         String sql = "SELECT user_id FROM student WHERE student_id = ?";
         try (Connection con = db.connect();
              PreparedStatement ps = con.prepareStatement(sql)) {
