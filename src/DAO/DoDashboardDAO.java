@@ -12,7 +12,7 @@ public class DoDashboardDAO {
         lecturer dosen = null;
         String sql = "SELECT l.*, p.name as program_name " +
                      "FROM lecturer l " +
-                     "LEFT JOIN program p ON l.program_id = p.program_id " +
+                     "LEFT JOIN study_program sp ON l.program_id = sp.program_id " +
                      "WHERE l.lecturer_id = ?";
         
         try (Connection conn = new koneksiDB().connect();
