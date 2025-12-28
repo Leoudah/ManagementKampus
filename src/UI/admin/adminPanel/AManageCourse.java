@@ -4,6 +4,7 @@
  */
 package UI.admin.adminPanel;
 import DAO.CourseDAO;
+import DAO.ProdiDAO;
 import Model.Course;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -15,12 +16,14 @@ import javax.swing.table.DefaultTableModel;
 public class AManageCourse extends javax.swing.JPanel {
 
     private CourseDAO courseDAO = new CourseDAO();
+    private ProdiDAO programDAO = new ProdiDAO();
     /**
      * Creates new form ManageCourceA
      */
      public AManageCourse() {
         initComponents();
         loadTableCourse();
+        initProdiCombo();
     }
       // ================== METHOD LOAD DATA KE TABEL ==================
     private void loadTableCourse() {
@@ -36,6 +39,14 @@ public class AManageCourse extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(this, "Gagal load data: " + e.getMessage());
     }
 }
+    
+    private void initProdiCombo() {
+        prodi.removeAllItems();
+
+        for (String name : programDAO.findAllProgramNames()) {
+            prodi.addItem(name);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -47,11 +58,10 @@ public class AManageCourse extends javax.swing.JPanel {
 
         jLabel6 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        prodi = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         jTextField2 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
@@ -66,6 +76,7 @@ public class AManageCourse extends javax.swing.JPanel {
         jPanel4 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jTable4 = new javax.swing.JTable();
+        dosen = new javax.swing.JComboBox<>();
 
         setPreferredSize(new java.awt.Dimension(800, 580));
 
@@ -79,7 +90,7 @@ public class AManageCourse extends javax.swing.JPanel {
             }
         });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        prodi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jButton1.setBackground(new java.awt.Color(255, 255, 102));
         jButton1.setText("Edit");
@@ -97,12 +108,6 @@ public class AManageCourse extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("COURCE");
-
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
-            }
-        });
 
         jLabel2.setText("Nama Cource");
 
@@ -180,6 +185,8 @@ public class AManageCourse extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
+        dosen.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -202,8 +209,7 @@ public class AManageCourse extends javax.swing.JPanel {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addComponent(jButton1))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(prodi, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
@@ -218,7 +224,8 @@ public class AManageCourse extends javax.swing.JPanel {
                                         .addGap(25, 25, 25)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel9))))))))
+                                            .addComponent(jLabel9)))
+                                    .addComponent(dosen, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -248,12 +255,12 @@ public class AManageCourse extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
+                .addComponent(dosen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(prodi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -301,8 +308,8 @@ public class AManageCourse extends javax.swing.JPanel {
         }
         try {
             int id = Integer.parseInt(jTextField3.getText());
-            int programId = Integer.parseInt(jComboBox2.getSelectedItem().toString());
-            String lecText = jTextField4.getText().trim();
+            int programId = Integer.parseInt(prodi.getSelectedItem().toString());
+            String lecText = dosen.getSelectedItem().toString();
             Integer lecturerId = lecText.isEmpty() ? null : Integer.parseInt(lecText);
 
             String code = jTextField1.getText().trim();
@@ -323,10 +330,6 @@ public class AManageCourse extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
-
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
@@ -337,8 +340,8 @@ public class AManageCourse extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
        try {
-            int programId = Integer.parseInt(jComboBox2.getSelectedItem().toString());
-            String lecText = jTextField4.getText().trim();
+            int programId = Integer.parseInt(prodi.getSelectedItem().toString());
+            String lecText = dosen.getSelectedItem().toString();
             Integer lecturerId = lecText.isEmpty() ? null : Integer.parseInt(lecText);
 
             String code = jTextField1.getText().trim();
@@ -388,10 +391,10 @@ public class AManageCourse extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> dosen;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -406,8 +409,8 @@ public class AManageCourse extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
+    private javax.swing.JComboBox<String> prodi;
     // End of variables declaration//GEN-END:variables
 }
