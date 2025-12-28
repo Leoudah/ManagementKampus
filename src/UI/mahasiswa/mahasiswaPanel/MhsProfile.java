@@ -150,13 +150,13 @@ public class MhsProfile extends javax.swing.JPanel {
     
     private void setDefaultPhoto() {
         try {
-            // Coba load foto dari resources
+            
             java.net.URL imgURL = getClass().getResource("/Images/default_profile.png");
             if (imgURL != null) {
                 defaultPhoto = new ImageIcon(imgURL);
                 lblFoto.setIcon(defaultPhoto);
             } else {
-                // Jika tidak ada foto, set border saja
+                
                 lblFoto.setText("No Photo");
                 lblFoto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             }
@@ -549,7 +549,7 @@ public class MhsProfile extends javax.swing.JPanel {
                             .addComponent(txtAlamat, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(77, 77, 77)
+                .addGap(110, 110, 110)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
