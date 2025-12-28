@@ -15,6 +15,25 @@ public class lecturer {
     private String telepon;
     private String email;
     
+    public lecturer(){
+    }
+    
+    public lecturer(int lecturerId, int userId, String fullName, int nidn, int nip,
+                    String gender, String title, String edukasiTertinggi,
+                    String bidangKeahlian, String telepon){
+        this.lecturerId = lecturerId;
+        this.userId = userId;
+        this.fullName = fullName;
+        this.nidn = nidn;
+        this.nip = nip;
+        this.gender = gender;
+        this.title = title;
+        this.edukasiTertinggi = edukasiTertinggi;
+        this.bidangKeahlian = bidangKeahlian;
+        this.telepon = telepon;
+    }    
+    
+    
 public lecturer(int lecturerId, int userId, int programId, String programName, int nidn,
                 String fullName, int nip, String gender, String title, String edukasiTertinggi,
                 String bidangKeahlian, String telepon, String email) {
