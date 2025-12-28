@@ -2,6 +2,7 @@ package DAO;
 
 import Database.koneksiDB;
 import Model.user;
+import Utils.PasswordUtil;
 
 import java.sql.*;
 import java.sql.Connection;
@@ -20,7 +21,7 @@ public class UserDAO {
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, username);
-            ps.setString(2, password);
+            ps.setString(2, PasswordUtil.hashPassword(password));
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -40,42 +41,6 @@ public class UserDAO {
         }
 
         return null; // Username/password salah atau user tidak aktif
-    }
-
-    public int create(user user) {
-
-        String sql = """
-            INSERT INTO user_account 
-            (username, password, email, role, status)
-            VALUES (?, ?, ?, ?, ?)
-        """;
-
-        try (Connection con = db.connect();
-             PreparedStatement ps = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-
-            ps.setString(1, user.getUsername());
-            ps.setString(2, user.getPasswordHash());
-            ps.setString(3, user.getEmail());
-            ps.setString(4, user.getRole());
-            ps.setString(5, user.getStatus());
-
-            int affectedRows = ps.executeUpdate();
-
-            if (affectedRows == 0) {
-                return -1;
-            }
-
-            try (ResultSet rs = ps.getGeneratedKeys()) {
-                if (rs.next()) {
-                    return rs.getInt(1); // user_id
-                }
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return -1;
     }
 
     public boolean updateStatus(int userId, String status) {

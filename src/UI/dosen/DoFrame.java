@@ -42,7 +42,7 @@ public class DoFrame extends javax.swing.JFrame {
 
             int lecturerId = UserSession.getLecturerId();
 
-            dashboardPanel = new DoDashboard();
+            dashboardPanel = new DoDashboard(lecturerId);
             profilePanel = new DoProfile();
             coursePanel = new DoCourse();
             myStudentPanel = new DoMystudent(lecturerId);

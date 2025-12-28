@@ -3,6 +3,7 @@ package DAO;
 import Database.koneksiDB;
 import Model.student;
 import Model.user;
+import Utils.PasswordUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -235,7 +236,7 @@ public class StudentDAO {
 
             try (PreparedStatement ps = con.prepareStatement(userSql, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setString(1, username);
-                ps.setString(2, hashPassword("mahasiswaUnud123"));
+                ps.setString(2, PasswordUtil.hashPassword("mahasiswaUnud123"));
                 ps.setString(3, email);
                 ps.executeUpdate();
 

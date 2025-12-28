@@ -28,10 +28,8 @@ public class DoCourse extends javax.swing.JPanel {
         try {
             // TEST 1: Cek DAO ada tidak
             DoCourseDAO dao = new DoCourseDAO();
-            System.out.println("✅ DoCourseDAO created OK");
             
             // TEST 2: Cek koneksi DB
-            System.out.println("🔄 Loading courses...");
             List<Course> courses = dao.getAllCourses();
             
             if (courses == null || courses.isEmpty()) {
@@ -39,8 +37,6 @@ public class DoCourse extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Tidak ada data course di database", "Info", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
-            
-            System.out.println("✅ Found " + courses.size() + " courses");
             
             // TEST 3: Populate table
             for (Course course : courses) {
@@ -50,10 +46,8 @@ public class DoCourse extends javax.swing.JPanel {
                     "Semester " + course.getSemesterSuggestion(),
                     ""
                 });
-                System.out.println("➕ Added: " + mataKuliah);
             }
-            
-            JOptionPane.showMessageDialog(this, courses.size() + " courses loaded!", "Success", JOptionPane.INFORMATION_MESSAGE);
+           
             
         } catch (Exception e) {
             e.printStackTrace();

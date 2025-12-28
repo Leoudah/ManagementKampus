@@ -27,11 +27,6 @@ public class MhsDashboard extends javax.swing.JPanel {
         loadDashboardData();
     }
     
-    
-    public MhsDashboard() {
-        this(1); // Default student_id = 1
-    }
-    
     private void initializeTableModel() {
         tableModel = new DefaultTableModel(
             new Object[][] {},

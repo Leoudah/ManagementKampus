@@ -12,6 +12,7 @@ import Model.user;
 import Model.lecturer;
 import Model.student;
 import Session.UserSession;
+import Utils.PasswordUtil;
 
 import javax.swing.*;
 
@@ -115,6 +116,7 @@ public class ZLoginAll extends javax.swing.JFrame {
 
         UserDAO dao = new UserDAO();
         user user = dao.login(username, password);
+        System.out.println(PasswordUtil.hashPassword(password));
         
         if (user == null) {
             JOptionPane.showMessageDialog(this, "Login gagal");

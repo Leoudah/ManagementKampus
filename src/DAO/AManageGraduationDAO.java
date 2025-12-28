@@ -19,13 +19,13 @@ public class AManageGraduationDAO {
         String sql = """
             SELECT 
                 s.student_id,
-                s.name AS student_name,
-                p.program_name,
+                s.full_name AS student_name,
+                p.name,
                 s.gpa
             FROM student s
-            JOIN program p ON s.program_id = p.program_id
+            JOIN study_program p ON s.program_id = p.program_id
             WHERE s.status = 'Lulus' OR s.gpa >= 3.0
-            ORDER BY s.gpa DESC, s.name
+            ORDER BY s.gpa DESC, s.full_name
         """;
 
         try (Connection con = db.connect();
@@ -49,7 +49,7 @@ public class AManageGraduationDAO {
     // ➕ ADD
     public boolean addStudent(int studentId, String name, int programId, double gpa, String status) {
         String sql = """
-            INSERT INTO student (student_id, name, program_id, gpa, status) 
+            INSERT INTO student (student_id, full_name, program_id, gpa, status) 
             VALUES (?, ?, ?, ?, ?)
         """;
         try (Connection con = db.connect();
@@ -70,7 +70,7 @@ public class AManageGraduationDAO {
     public boolean updateStudent(int studentId, String name, int programId, double gpa, String status) {
         String sql = """
             UPDATE student 
-            SET name = ?, program_id = ?, gpa = ?, status = ? 
+            SET full_name = ?, program_id = ?, gpa = ?, status = ? 
             WHERE student_id = ?
         """;
         try (Connection con = db.connect();
@@ -119,7 +119,7 @@ public class AManageGraduationDAO {
     // 🔎 GET BY ID
     public Object[] getStudentById(int studentId) {
         String sql = """
-            SELECT s.student_id, s.name, s.program_id, s.gpa, s.status
+            SELECT s.student_id, s.full_name, s.program_id, s.gpa, s.status
             FROM student s
             WHERE s.student_id = ?
         """;

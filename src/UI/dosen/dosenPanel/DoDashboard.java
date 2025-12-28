@@ -21,10 +21,6 @@ public class DoDashboard extends javax.swing.JPanel {
         loadDashboardData();
     }
     
-    // Constructor default
-    public DoDashboard() {
-        this(1); // Default lecturer_id = 1
-    }
     
     private void initializeTableModel() {
         tableModel = new DefaultTableModel(
