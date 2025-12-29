@@ -24,7 +24,6 @@ public class lecturer {
         this.lecturerId = lecturerId;
         this.userId = userId;
         this.fullName = fullName;
-        this.nidn = nidn;
         this.nip = nip;
         this.gender = gender;
         this.title = title;

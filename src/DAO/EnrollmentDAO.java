@@ -14,36 +14,58 @@ public class EnrollmentDAO {
     /* =========================
        CREATE ENROLLMENT
     ========================= */
-    public boolean enroll(int studentId, int courseId, int semesterId) {
+public boolean enroll(int studentId, int courseId, int semesterId) {
+    // Ambil attempt terakhir
+    int lastAttempt = getLastAttempt(studentId, courseId);
+    int nextAttempt = lastAttempt + 1;
 
-        // Cegah double enrollment course yang sama
-        if (isAlreadyEnrolled(studentId, courseId, semesterId)) {
-            throw new RuntimeException("Mahasiswa sudah mengambil mata kuliah ini");
+    // Cek apakah mahasiswa pernah lulus
+    String sqlCheck = """
+        SELECT grade, status 
+        FROM enrollment 
+        WHERE student_id=? AND course_id=? 
+        ORDER BY attempt DESC 
+        LIMIT 1
+    """;
+
+    try (Connection con = db.connect();
+         PreparedStatement psCheck = con.prepareStatement(sqlCheck)) {
+
+        psCheck.setInt(1, studentId);
+        psCheck.setInt(2, courseId);
+
+        try (ResultSet rs = psCheck.executeQuery()) {
+            if (rs.next()) {
+                String grade = rs.getString("grade");
+                String status = rs.getString("status");
+
+                // Mahasiswa sudah lulus (grade != E) → tidak boleh enroll
+                if (!"E".equalsIgnoreCase(grade) && "COMPLETED".equalsIgnoreCase(status)) {
+                    throw new RuntimeException("Mahasiswa sudah lulus course ini, tidak bisa enroll ulang");
+                }
+            }
         }
 
-        String sql = """
-            INSERT INTO enrollment (
-                student_id,
-                course_id,
-                semester_id,
-                status,
-                attempt
-            ) VALUES (?, ?, ?, 'PENDING', 1)
+        // INSERT enrollment baru
+        String sqlInsert = """
+            INSERT INTO enrollment (student_id, course_id, semester_id, status, attempt)
+            VALUES (?, ?, ?, 'ENROLLED', ?)
         """;
 
-        try (Connection con = db.connect();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (PreparedStatement psInsert = con.prepareStatement(sqlInsert)) {
+            psInsert.setInt(1, studentId);
+            psInsert.setInt(2, courseId);
+            psInsert.setInt(3, semesterId);
+            psInsert.setInt(4, nextAttempt);
 
-            ps.setInt(1, studentId);
-            ps.setInt(2, courseId);
-            ps.setInt(3, semesterId);
-
-            return ps.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Gagal melakukan enrollment", e);
+            return psInsert.executeUpdate() > 0;
         }
+
+    } catch (SQLException e) {
+        throw new RuntimeException("Gagal enroll: " + e.getMessage(), e);
     }
+}
+
 
     /* =========================
        CHECK ALREADY ENROLLED
@@ -154,5 +176,63 @@ public class EnrollmentDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Gagal withdraw mata kuliah", e);
         }
+    }
+
+    public boolean canEnrollAgain(int studentId, int courseId) {
+        String sql = """
+            SELECT grade, status
+            FROM enrollment
+            WHERE student_id = ? AND course_id = ?
+            ORDER BY attempt DESC
+            LIMIT 1
+        """;
+
+        try (Connection con = db.connect();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, studentId);
+            ps.setInt(2, courseId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    String grade = rs.getString("grade");
+                    String status = rs.getString("status");
+
+                    // Jika sebelumnya gagal (grade E) dan sudah completed → boleh enroll ulang
+                    return "E".equalsIgnoreCase(grade) && "COMPLETED".equalsIgnoreCase(status);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // jika belum pernah mengambil course, boleh enroll
+        return true;
+    }
+
+    public int getLastAttempt(int studentId, int courseId) {
+        String sql = """
+            SELECT attempt
+            FROM enrollment
+            WHERE student_id=? AND course_id=?
+            ORDER BY attempt DESC
+            LIMIT 1
+        """;
+
+        try (Connection con = db.connect();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, studentId);
+            ps.setInt(2, courseId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("attempt");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

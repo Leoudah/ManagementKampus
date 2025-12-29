@@ -133,7 +133,7 @@ public class CourseDAO {
         }
     }
 
-        public List<Course> findAvailableByStudent(int studentId) {
+    public List<Course> findAvailableByStudent(int studentId) {
 
         List<Course> courses = new ArrayList<>();
 
@@ -148,12 +148,10 @@ public class CourseDAO {
                 c.semester_suggestion
             FROM course c
             JOIN student s ON s.program_id = c.program_id
+            LEFT JOIN enrollment e
+                ON e.course_id = c.course_id AND e.student_id = ?
             WHERE s.student_id = ?
-              AND c.course_id NOT IN (
-                    SELECT e.course_id
-                    FROM enrollment e
-                    WHERE e.student_id = ?
-              )
+              AND (e.course_id IS NULL OR (e.grade = 'E' AND e.status = 'COMPLETED'))
             ORDER BY c.semester_suggestion, c.course_code
         """;
 
@@ -185,5 +183,6 @@ public class CourseDAO {
 
         return courses;
     }
+
 }
 
